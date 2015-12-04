@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@drawable/bee_blast_background">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@mipmap/bee_blast_main"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.usercare.views.LandingPageButton
+            android:id="@+id/beeBlastLifesaverButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="start"
+            android:background="@mipmap/red_lifesaver"/>
+
+        <Button
+            android:id="@+id/beeBlastNewGameButton"
+            style="@style/BeeBlastButtonsStyle"
+            android:onClick="onBeeBlastNewGameClicked"
+            android:text="@string/bee_blast_new_game_txt"/>
+
+        <Button
+            android:id="@+id/beeBlastSettingsButton"
+            style="@style/BeeBlastButtonsStyle"
+            android:text="@string/bee_blast_settings_txt"/>
+
+        <Button
+            android:id="@+id/beeBlastShareButton"
+            style="@style/BeeBlastButtonsStyle"
+            android:text="@string/bee_blast_share_txt"/>
+    </LinearLayout>
+
+</FrameLayout>

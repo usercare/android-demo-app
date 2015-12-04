@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.example.usercare.demo">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <permission android:name="com.example.usercare.demo.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <uses-permission android:name="com.example.sbakaenko.usercaredemo.permission.C2D_MESSAGE" />
+
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
+
+
+    <application
+        android:name="com.example.usercare.demo.UserCareApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:label"
+            >
+
+        <meta-data android:name="com.google.android.gms.version"
+                   android:value="@integer/google_play_services_version" />
+
+        <receiver
+                android:name="com.google.android.gms.gcm.GcmReceiver"
+                android:exported="true"
+                android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <category android:name="com.example.sbakaenko.usercaredemo"/>
+            </intent-filter>
+        </receiver>
+
+        <service
+                android:name="com.example.usercare.demo.gcm.GcmService"
+                android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+            </intent-filter>
+        </service>
+
+        <service
+                android:name="com.example.usercare.demo.gcm.MyInstanceIDListenerService"
+                android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID"/>
+            </intent-filter>
+        </service>
+
+        <service
+                android:name="com.example.usercare.demo.gcm.RegistrationIntentService"
+                android:exported="false">
+        </service>
+
+        <activity
+                android:name="com.usercare.messaging.MessagingActivity"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
+                android:label="@string/app_name" />
+
+        <activity android:name="com.usercare.faq.activities.FaqActivity"
+                  android:screenOrientation="portrait"
+                  android:windowSoftInputMode="adjustPan|stateAlwaysHidden"/>
+
+        <activity android:name="com.usercare.faq.activities.FaqDetailsActivity"
+                  android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
+                  android:screenOrientation="portrait"/>
+
+        <activity android:name="com.usercare.activities.LandingPageActivity"
+         android:screenOrientation="portrait"/>
+
+<activity android:name="com.usercare.tickets.MyTicketsActivity"
+        android:screenOrientation="portrait"/>
+
+
+        <activity
+            android:name="com.example.usercare.demo.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
