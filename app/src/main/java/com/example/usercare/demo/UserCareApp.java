@@ -1,8 +1,8 @@
 package com.example.usercare.demo;
 
-import com.usercare.events.EventsTracker;
-
 import android.app.Application;
+
+import com.usercare.events.EventsTracker;
 
 public class UserCareApp extends Application {
 

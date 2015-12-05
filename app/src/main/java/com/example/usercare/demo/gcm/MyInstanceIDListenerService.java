@@ -1,11 +1,10 @@
 package com.example.usercare.demo.gcm;
 
-import com.google.android.gms.iid.InstanceIDListenerService;
-
-import com.usercare.utils.UserCareUtils;
-
 import android.content.Context;
 import android.content.Intent;
+
+import com.example.usercare.demo.UserCareUtils;
+import com.google.android.gms.iid.InstanceIDListenerService;
 
 public class MyInstanceIDListenerService extends InstanceIDListenerService {
 

@@ -18,7 +18,7 @@ package com.example.usercare.demo.purchase;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.usercare.BuildConfig;
+import com.example.usercare.demo.BuildConfig;
 
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;

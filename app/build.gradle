@@ -5,7 +5,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "com.example.sbakaenko.usercaredemo"
+        applicationId "com.example.usercare.demo"
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
@@ -26,9 +26,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.2.1'
     compile 'com.google.android.gms:play-services-gcm:8.1.0'
     compile 'com.google.android.gms:play-services-ads:8.1.0'
-    compile 'com.loopj.android:android-async-http:1.4.8'
-    compile 'com.google.code.gson:gson:2.4'
-    compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:design:22.2.1'
-    compile project(':usercaresdk')
+    compile project(':usercaresdk-release')
 }

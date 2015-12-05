@@ -1,9 +1,9 @@
 package com.example.usercare.demo.gcm;
 
-import com.usercare.gcm.UserCareGcmHandler;
-
 import android.app.IntentService;
 import android.content.Intent;
+
+import com.usercare.gcm.UserCareGcmHandler;
 
 public class RegistrationIntentService extends IntentService {
 
