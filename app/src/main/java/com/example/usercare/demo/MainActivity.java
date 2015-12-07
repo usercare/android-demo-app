@@ -13,14 +13,17 @@ import com.example.usercare.demo.purchase.IabHelper;
 import com.example.usercare.demo.purchase.IabResult;
 import com.example.usercare.demo.purchase.Inventory;
 import com.example.usercare.demo.purchase.Purchase;
+import com.usercare.callbacks.UserCareErrorCallback;
+import com.usercare.callbacks.UserCareMessagingCallbacks;
 import com.usercare.events.EventsTracker;
 import com.usercare.gcm.UserCareGcmHandler;
 import com.usercare.managers.UserCareAppStatusManager;
+import com.usercare.messaging.entities.ActionEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends FragmentActivity implements View.OnClickListener {
+public class MainActivity extends FragmentActivity implements View.OnClickListener, UserCareMessagingCallbacks, UserCareErrorCallback {
 
     private static final String TAG = "GCM Demo";
     private static final String BASE64_ENCODED_KEY = "INPUT YOUR BASE64 ENDCODED KEY HERE";
@@ -244,6 +247,33 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             mHelper.dispose();
             mHelper = null;
         }
+    }
+
+    @Override
+    public void usercareSdkFailedWithError(int i, Throwable throwable) {
+        Log.d(TAG, "usercareSdkFailedWithError statusCode = " + i);
+        Log.d(TAG, "usercareSdkFailedWithError error = " + throwable.getMessage());
+    }
+
+    @Override
+    public void usercareSdkFailedWithError(Throwable throwable) {
+        Log.d(TAG, "usercareSdkFailedWithError error = " + throwable.getMessage());
+    }
+
+    @Override
+    public void onActionMessageReceived(ActionEntity actionEntity) {
+        Log.d(TAG, "actionEntity.getBonusText() = " + actionEntity.getBonusText());
+        Log.d(TAG, "actionEntity.getBonusImageUrl() = " + actionEntity.getBonusImageUrl());
+    }
+
+    @Override
+    public void onSystemMessageReceived(String s) {
+        Log.d(TAG, "onSystemMessageReceived = " + s);
+    }
+
+    @Override
+    public void onSupporterMessageReceived(String s) {
+        Log.d(TAG, "onSupporterMessageReceived = " + s);
     }
 
 }
