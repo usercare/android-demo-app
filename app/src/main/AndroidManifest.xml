@@ -91,6 +91,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name="com.usercare.events.NetworkChangeReceiver"
+            android:label="NetworkChangeReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.usercare.events.EventsTracker$AppSessionChecker"/>
+        <service android:name="com.usercare.events.EventsAlarmService"
+                 android:exported="false"/>
+        <service android:name="com.example.usercare.demo.ActionsListener"
+                 android:exported="false"/>
+
     </application>
 
 </manifest>

@@ -28,7 +28,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.vending.billing.IInAppBillingService;
-import com.usercare.events.EventsManager;
+import com.usercare.events.EventsTracker;
 
 import org.json.JSONException;
 
@@ -288,7 +288,7 @@ public class IabHelper {
         mSetupDone = false;
         if (mServiceConn != null) {
             logDebug("Unbinding from service.");
-            if (mContext != null) mContext.unbindService(mServiceConn);
+            if (mContext != null && mService != null) mContext.unbindService(mServiceConn);
         }
         mDisposed = true;
         mContext = null;
@@ -934,7 +934,7 @@ public class IabHelper {
             SkuDetails d = new SkuDetails(itemType, thisResponse);
             logDebug("Got sku details: " + d);
             inv.addSkuDetails(d);
-            EventsManager.getInstance().populateSkuDetails(d.getSku(), d.getTitle(), d.getPrice(), d.getPriceCurrencyCode());
+            EventsTracker.setSkuDetails(d.getSku(), d.getTitle(), d.getPrice(), d.getPriceCurrencyCode());
         }
         return BILLING_RESPONSE_RESULT_OK;
     }

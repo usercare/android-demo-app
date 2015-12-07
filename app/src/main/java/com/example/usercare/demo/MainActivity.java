@@ -13,7 +13,7 @@ import com.example.usercare.demo.purchase.IabHelper;
 import com.example.usercare.demo.purchase.IabResult;
 import com.example.usercare.demo.purchase.Inventory;
 import com.example.usercare.demo.purchase.Purchase;
-import com.usercare.events.EventsManager;
+import com.usercare.events.EventsTracker;
 import com.usercare.gcm.UserCareGcmHandler;
 import com.usercare.managers.UserCareAppStatusManager;
 
@@ -199,7 +199,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
             if (purchase.getSku().equals(ITEM_SKU)) {
                 Log.d(TAG, "Purchase is " + ITEM_SKU);
-                EventsManager.getInstance().sendPurchaseEvent(purchase.getSku(), purchase.getOrderId(), purchase.getPurchaseTime());
+                EventsTracker.sendPurchaseEvent(purchase.getSku(), purchase.getOrderId(), purchase.getPurchaseTime());
                 mHelper.consumeAsync(purchase, mConsumeFinishedListener);
             }
         }
@@ -230,7 +230,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     private void complain(String message) {
         Log.e(TAG, "**** Purchase Error: " + message);
-        EventsManager.getInstance().sendPurchaseFailedEvent();
+        EventsTracker.sendPurchaseFailedEvent();
     }
 
     @Override
