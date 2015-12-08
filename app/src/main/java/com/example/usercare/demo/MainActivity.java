@@ -18,6 +18,7 @@ import com.usercare.callbacks.UserCareMessagingCallbacks;
 import com.usercare.events.EventsTracker;
 import com.usercare.gcm.UserCareGcmHandler;
 import com.usercare.managers.UserCareAppStatusManager;
+import com.usercare.messaging.MessagingActivity;
 import com.usercare.messaging.entities.ActionEntity;
 
 import java.util.ArrayList;
@@ -247,6 +248,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             mHelper.dispose();
             mHelper = null;
         }
+    }
+
+    private void openActivityDirectly() {
+        startActivity(new Intent(this, MessagingActivity.class)); // or MyTicketsActivity / FaqActivity / LandingPageActivity
     }
 
     @Override
