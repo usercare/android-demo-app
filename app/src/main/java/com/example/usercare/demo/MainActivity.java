@@ -22,7 +22,9 @@ import com.usercare.messaging.MessagingActivity;
 import com.usercare.messaging.entities.ActionEntity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener, UserCareMessagingCallbacks, UserCareErrorCallback {
 
@@ -116,6 +118,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private void setupUserCareControllers() {
         findViewById(R.id.btn_update_usercare_status).setOnClickListener(this);
         findViewById(R.id.buyClickButton).setOnClickListener(this);
+        findViewById(R.id.customEventButton).setOnClickListener(this);
     }
 
     @Override
@@ -132,9 +135,20 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 Log.d(TAG, "Launching purchase flow");
                 mHelper.launchPurchaseFlow(this, ITEM_SKU, PURCHASE_REQUEST_CODE, mPurchaseFinishedListener, "");
                 break;
+            case R.id.customEventButton:
+                setupCustomEvent();
+                break;
             default:
                 break;
         }
+    }
+
+    private void setupCustomEvent() {
+        Map<String, String> customEventMap = new HashMap<>();
+        customEventMap.put("key1", "value1");
+        customEventMap.put("key2", "value2");
+        customEventMap.put("key3", "value3");
+        EventsTracker.sendCustomEvent("custom_event", customEventMap);
     }
 
     @Override

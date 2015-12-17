@@ -181,6 +181,16 @@
                 android:text="Buy a click"
                 android:visibility="visible"/>
 
+            <Button
+                android:id="@+id/customEventButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:text="Send custom event"
+                android:visibility="visible"/>
+
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
