@@ -15,7 +15,9 @@ public class ActionsListener extends UserCareInAppActionsListener {
         super.onCreate();
         Set<String> actions = new HashSet<>();
         actions.add("grantBonus");
-        actions.add("non-grantBonus");
+        actions.add("MyGrantBonusUserCare_01");
+        actions.add("MyGrantBonusUserCare.01.LongLongLongLongLongLongName");
+        actions.add("x-~!@#$%^&*()name");
         registerAppForActions(actions);
     }
 
