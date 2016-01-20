@@ -16,15 +16,12 @@ import com.example.usercare.demo.purchase.Purchase;
 import com.usercare.callbacks.UserCareErrorCallback;
 import com.usercare.callbacks.UserCareMessagingCallbacks;
 import com.usercare.events.EventsTracker;
-import com.usercare.gcm.UserCareGcmHandler;
 import com.usercare.managers.UserCareAppStatusManager;
 import com.usercare.messaging.MessagingActivity;
 import com.usercare.messaging.entities.ActionEntity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener, UserCareMessagingCallbacks, UserCareErrorCallback {
 
@@ -33,7 +30,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private static final String ITEM_SKU = "INPUT YOUR ITEM SKU HERE";
     private static final int PURCHASE_REQUEST_CODE = 100001;
     private static final String CUSTOMER_ID = "";
-    private static final String API_KEY = "YOUR APP KEY";
+    private static final String APP_KEY = "YOUR APP KEY";
 
     private Context mContext;
     private IabHelper mHelper;
@@ -52,9 +49,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         setupUserCareControllers();
 
         if (UserCareUtils.isGooglePlayServicesAvailable(this)) {
-            if (UserCareGcmHandler.init(mContext).isPushTokenAvailable()) {
-                registerAppForPushNotifications();
-            }
+            registerAppForPushNotifications();
         }
 
         startService(new Intent(mContext, ActionsListener.class));
@@ -125,7 +120,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_update_usercare_status:
-                mManager = new UserCareAppStatusManager(this, CUSTOMER_ID, API_KEY);
+                mManager = new UserCareAppStatusManager(this, CUSTOMER_ID, APP_KEY);
 //                mManager.setUserProperties("John", "Doe", "test@test.com");
                 mManager.updateAppStatus();
                 break;
@@ -144,11 +139,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     private void setupCustomEvent() {
-        Map<String, String> customEventMap = new HashMap<>();
-        customEventMap.put("key1", "value1");
-        customEventMap.put("key2", "value2");
-        customEventMap.put("key3", "value3");
-        EventsTracker.sendCustomEvent("custom_event", customEventMap);
+        String jsonBody = "{\"key1\", \"value1\", \"key2\", \"value2\", \"key3\", \"value3\"}";
+        EventsTracker.sendCustomEvent("custom_event", jsonBody);
     }
 
     @Override
@@ -205,11 +197,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             if (mHelper == null) return;
 
             if (result.isFailure()) {
-                complain("Error purchasing: " + result);
+                complain("Error purchasing: " + result, purchase);
                 return;
             }
             if (!verifyDeveloperPayload(purchase)) {
-                complain("Error purchasing. Authenticity verification failed.");
+                complain("Error purchasing. Authenticity verification failed.", purchase);
                 return;
             }
 
@@ -247,8 +239,14 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     private void complain(String message) {
+        complain(message, null);
+    }
+
+    private void complain(String message, Purchase purchase) {
         Log.e(TAG, "**** Purchase Error: " + message);
-        EventsTracker.sendPurchaseFailedEvent();
+        if (purchase != null) {
+            EventsTracker.sendPurchaseFailedEvent(purchase.getSku(), purchase.getOrderId(), purchase.getPurchaseTime());
+        }
     }
 
     @Override
