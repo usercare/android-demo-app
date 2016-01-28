@@ -15,15 +15,18 @@ import com.example.usercare.demo.purchase.Inventory;
 import com.example.usercare.demo.purchase.Purchase;
 import com.usercare.callbacks.UserCareErrorCallback;
 import com.usercare.callbacks.UserCareMessagingCallbacks;
+import com.usercare.callbacks.UserCareSdkInitializationFinishedListener;
 import com.usercare.events.EventsTracker;
 import com.usercare.managers.UserCareAppStatusManager;
+import com.usercare.managers.UserCareCallbackManager;
 import com.usercare.messaging.MessagingActivity;
 import com.usercare.messaging.entities.ActionEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends FragmentActivity implements View.OnClickListener, UserCareMessagingCallbacks, UserCareErrorCallback {
+public class MainActivity extends FragmentActivity implements View.OnClickListener,
+        UserCareMessagingCallbacks, UserCareErrorCallback, UserCareSdkInitializationFinishedListener {
 
     private static final String TAG = "GCM Demo";
     private static final String BASE64_ENCODED_KEY = "INPUT YOUR BASE64 ENDCODED KEY HERE";
@@ -47,12 +50,19 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         setupPurchaseHelper();
         setupUserCareControllers();
+        setupCallbackListeners();
 
         if (UserCareUtils.isGooglePlayServicesAvailable(this)) {
             registerAppForPushNotifications();
         }
 
         startService(new Intent(mContext, ActionsListener.class));
+    }
+
+    private void setupCallbackListeners() {
+        UserCareCallbackManager.getInstance().setUserCareErrorCallback(this);
+        UserCareCallbackManager.getInstance().setUserCareMessagingCallbacks(this);
+        UserCareCallbackManager.getInstance().setSdkInitializationFinishedListener(this);
     }
 
     private void setupPurchaseHelper() {
@@ -114,6 +124,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         findViewById(R.id.btn_update_usercare_status).setOnClickListener(this);
         findViewById(R.id.buyClickButton).setOnClickListener(this);
         findViewById(R.id.customEventButton).setOnClickListener(this);
+        findViewById(R.id.crashEventButton).setOnClickListener(this);
     }
 
     @Override
@@ -133,6 +144,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             case R.id.customEventButton:
                 setupCustomEvent();
                 break;
+            case R.id.crashEventButton:
+                throw new NullPointerException();
             default:
                 break;
         }
@@ -291,6 +304,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     @Override
     public void onSupporterMessageReceived(String s) {
         Log.d(TAG, "onSupporterMessageReceived = " + s);
+    }
+
+    @Override
+    public void usercareSdkInitializationFinished(boolean b) {
+        Log.d(TAG, "usercareSdkInitializationFinished = " + b);
     }
 
 }

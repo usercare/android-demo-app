@@ -102,6 +102,10 @@
         <service android:name="com.example.usercare.demo.ActionsListener"
                  android:exported="false"/>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="0b95f0997837533af3beb4c928aed397ed1ee85f" />
+
     </application>
 
 </manifest>
