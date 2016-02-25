@@ -20,6 +20,7 @@ import com.usercare.callbacks.UserCareSdkInitializationFinishedListener;
 import com.usercare.events.EventsTracker;
 import com.usercare.gcm.UserCareGcmHandler;
 import com.usercare.managers.UserCareAppStatusManager;
+import com.usercare.managers.UserCareCallbackManager;
 import com.usercare.messaging.MessagingActivity;
 import com.usercare.messaging.entities.ActionEntity;
 
@@ -58,6 +59,9 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void setupUserCareControllers() {
+        UserCareCallbackManager.getInstance().setSdkInitializationFinishedListener(this);
+        UserCareCallbackManager.getInstance().setUserCareMessagingCallbacks(this);
+        UserCareCallbackManager.getInstance().setUserCareErrorCallback(this);
         findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
