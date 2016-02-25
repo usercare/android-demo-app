@@ -1,204 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbars="vertical">
+    android:background="@mipmap/background">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="?attr/actionBarSize"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
 
                 <TextView
-                    android:id="@+id/userInfoTextView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+                    android:text="U  s  e  r\nC  a  r  e"
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="17sp"
+                    android:textStyle="bold"/>
 
-            </LinearLayout>
+            </FrameLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-            <TextView
-                android:id="@+id/textView3"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="@string/usercare_buttons"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                android:layout_height="5dp"
+                android:background="@drawable/shadow"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            <include
+                android:id="@+id/includeContentMain"
+                layout="@layout/content_main"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:text="Live Chat Button -> "
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                <com.usercare.views.MessagingButton
-                    android:id="@+id/messaging_button"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="6dp"
-                    android:minHeight="85dp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:text="Vip Lounge Button -> "
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                <com.usercare.views.VipLoungeButton
-                    android:id="@+id/imageButton1"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="6dp"
-                    android:minHeight="85dp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:text="FAQ Button -> "
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                <com.usercare.views.FaqButton
-                    android:id="@+id/faqButton"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="6dp"
-                    android:minHeight="85dp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:text="LandingPage Button -> "
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                <com.usercare.views.LandingPageButton
-                    android:id="@+id/landingPageButton"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="6dp"
-                    android:minHeight="85dp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:text="My Tickets Button -> "
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                <com.usercare.views.MyTicketsButton
-                    android:id="@+id/myTicketsButton"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="6dp"
-                    android:minHeight="85dp"/>
-            </LinearLayout>
-
-
-
-            <Button
-                android:id="@+id/btn_update_usercare_status"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:text="@string/update_usercare_status"/>
-
-            <Button
-                android:id="@+id/buyClickButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:text="Buy a click"
-                android:visibility="visible"/>
-
-            <Button
-                android:id="@+id/customEventButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:text="Send custom event"
-                android:visibility="visible"/>
-            <Button
-                android:id="@+id/crashEventButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:text="Send crash event"
-                android:visibility="visible"/>
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+
+    </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="21dp"
+        android:scaleType="center"
+        android:src="@mipmap/fab"/>
+
+</FrameLayout>

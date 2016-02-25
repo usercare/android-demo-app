@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">UserCareDemo</string>
 
-    <string name="action_settings">Settings</string>
     <string name="update_usercare_status">Update UserCare Status</string>
     <string name="usercare_buttons">\nUserCare buttons</string>
-    <string name="update_test_data">Update Test Data</string>
-    <string name="test_settings_text">Test settings</string>
+    <string name="buy_click">Buy a click</string>
+    <string name="send_custom_event">Send custom event</string>
+    <string name="send_crash_event">Send crash event</string>
+
 </resources>

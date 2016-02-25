@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/btn_update_usercare_status"
+        android:title="@string/update_usercare_status"/>
+    <item
+        android:id="@+id/buyClickButton"
+        android:title="@string/buy_click"/>
+    <item
+        android:id="@+id/customEventButton"
+        android:title="@string/send_custom_event"/>
+    <item
+        android:id="@+id/crashEventButton"
+        android:title="@string/send_crash_event"/>
+
+</menu>

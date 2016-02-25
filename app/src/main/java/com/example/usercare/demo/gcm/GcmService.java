@@ -1,10 +1,9 @@
 package com.example.usercare.demo.gcm;
 
-import com.google.android.gms.gcm.GcmListenerService;
-
-import com.usercare.gcm.UserCareGcmHandler;
-
 import android.os.Bundle;
+
+import com.google.android.gms.gcm.GcmListenerService;
+import com.usercare.gcm.UserCareGcmHandler;
 
 public class GcmService extends GcmListenerService {
 

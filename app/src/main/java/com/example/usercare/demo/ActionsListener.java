@@ -23,7 +23,7 @@ public class ActionsListener extends UserCareInAppActionsListener {
 
     @Override
     public void onActionCallbackReceived(String callbackName, String callbackData) {
-        // TODO: Handle as you wish
+        // TODO: Handle as necessary
     }
 
 }

@@ -1,159 +1,133 @@
 package com.example.usercare.demo;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.cocosw.bottomsheet.BottomSheet;
 import com.example.usercare.demo.gcm.RegistrationIntentService;
 import com.example.usercare.demo.purchase.IabHelper;
-import com.example.usercare.demo.purchase.IabResult;
-import com.example.usercare.demo.purchase.Inventory;
-import com.example.usercare.demo.purchase.Purchase;
 import com.usercare.callbacks.UserCareErrorCallback;
 import com.usercare.callbacks.UserCareMessagingCallbacks;
 import com.usercare.callbacks.UserCareSdkInitializationFinishedListener;
 import com.usercare.events.EventsTracker;
+import com.usercare.gcm.UserCareGcmHandler;
 import com.usercare.managers.UserCareAppStatusManager;
-import com.usercare.managers.UserCareCallbackManager;
 import com.usercare.messaging.MessagingActivity;
 import com.usercare.messaging.entities.ActionEntity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MainActivity extends FragmentActivity implements View.OnClickListener,
+public class MainActivity extends AppCompatActivity implements
         UserCareMessagingCallbacks, UserCareErrorCallback, UserCareSdkInitializationFinishedListener {
 
-    private static final String TAG = "GCM Demo";
-    private static final String BASE64_ENCODED_KEY = "INPUT YOUR BASE64 ENDCODED KEY HERE";
-    private static final String ITEM_SKU = "INPUT YOUR ITEM SKU HERE";
-    private static final int PURCHASE_REQUEST_CODE = 100001;
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     private static final String CUSTOMER_ID = "";
     private static final String APP_KEY = "YOUR APP KEY";
 
     private Context mContext;
+
+    private PurchaseHelper mPurchaseHelper;
     private IabHelper mHelper;
     private UserCareAppStatusManager mManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         super.onCreate(savedInstanceState);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
         setContentView(R.layout.activity_main);
         mContext = getApplicationContext();
 
-        TextView userInfo = (TextView) findViewById(R.id.userInfoTextView);
-        userInfo.setText("version: " + BuildConfig.VERSION_NAME + " (build: " + getString(R.string.uc_build_number) + ")");
-
-        setupPurchaseHelper();
+        setupBuildVersion();
         setupUserCareControllers();
-        setupCallbackListeners();
+        setupPurchaseHelper();
 
-        if (UserCareUtils.isGooglePlayServicesAvailable(this)) {
-            registerAppForPushNotifications();
+        if (savedInstanceState == null) {
+            setupPushNotifications();
+            setupInAppActions();
         }
-
-        startService(new Intent(mContext, ActionsListener.class));
     }
 
-    private void setupCallbackListeners() {
-        UserCareCallbackManager.getInstance().setUserCareErrorCallback(this);
-        UserCareCallbackManager.getInstance().setUserCareMessagingCallbacks(this);
-        UserCareCallbackManager.getInstance().setSdkInitializationFinishedListener(this);
-    }
-
-    private void setupPurchaseHelper() {
-        final List<String> skus = new ArrayList<>();
-        skus.add(ITEM_SKU);
-
-        Log.d(TAG, "Creating IAB helper.");
-        mHelper = new IabHelper(this, BASE64_ENCODED_KEY);
-        mHelper.enableDebugLogging(true);
-
-        Log.d(TAG, "Starting setup.");
-        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-            public void onIabSetupFinished(IabResult result) {
-                Log.d(TAG, "Setup finished.");
-
-                if (!result.isSuccess()) {
-                    complain("Problem setting up in-app billing: " + result);
-                    return;
-                }
-
-                if (mHelper == null) return;
-
-                Log.d(TAG, "Setup successful. Querying inventory.");
-                mHelper.queryInventoryAsync(true, skus, mGotInventoryListener);
+    private void setupUserCareControllers() {
+        findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setupBottomSheet();
             }
         });
     }
 
-    IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
-        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
-            Log.d(TAG, "Query inventory finished.");
-
-            if (mHelper == null) return;
-
-            if (result.isFailure()) {
-                complain("Failed to query inventory: " + result);
-                return;
+    private void setupBottomSheet() {
+        new BottomSheet.Builder(this, R.style.BottomSheet_StyleDialog).sheet(R.menu.menu_main).listener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case R.id.btn_update_usercare_status:
+                        mManager = new UserCareAppStatusManager(MainActivity.this, CUSTOMER_ID, APP_KEY);
+                        mManager.updateAppStatus();
+                        break;
+                    case R.id.buyClickButton:
+//                        mPurchaseHelper.makePurchase();
+                        sendPurchaseEvent();
+                        break;
+                    case R.id.customEventButton:
+                        setupCustomEvent();
+                        break;
+                    case R.id.crashEventButton:
+                        throw new NullPointerException();
+                }
             }
-
-            Log.d(TAG, "Query inventory was successful.");
-
-            /*
-             * Check for items we own. Notice that for each purchase, we check
-             * the developer payload to see if it's correct! See
-             * verifyDeveloperPayload().
-             */
-
-            Purchase gasPurchase = inventory.getPurchase(ITEM_SKU);
-            if (gasPurchase != null && verifyDeveloperPayload(gasPurchase)) {
-                Log.d(TAG, "We have sku. Consuming it.");
-                mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU), mConsumeFinishedListener);
-                return;
-            }
-            Log.d(TAG, "Initial inventory query finished; enabling main UI.");
-        }
-    };
-
-    private void setupUserCareControllers() {
-        findViewById(R.id.btn_update_usercare_status).setOnClickListener(this);
-        findViewById(R.id.buyClickButton).setOnClickListener(this);
-        findViewById(R.id.customEventButton).setOnClickListener(this);
-        findViewById(R.id.crashEventButton).setOnClickListener(this);
+        }).show();
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_update_usercare_status:
-                mManager = new UserCareAppStatusManager(this, CUSTOMER_ID, APP_KEY);
-//                mManager.setUserProperties("John", "Doe", "test@test.com");
-                mManager.updateAppStatus();
-                break;
-            case R.id.buyClickButton:
-                findViewById(R.id.buyClickButton).setEnabled(false);
-                Log.d(TAG, "Button clicked.");
-                Log.d(TAG, "Launching purchase flow");
-                mHelper.launchPurchaseFlow(this, ITEM_SKU, PURCHASE_REQUEST_CODE, mPurchaseFinishedListener, "");
-                break;
-            case R.id.customEventButton:
-                setupCustomEvent();
-                break;
-            case R.id.crashEventButton:
-                throw new NullPointerException();
-            default:
-                break;
-        }
+    private void sendPurchaseEvent() {
+        EventsTracker eventsTracker = new EventsTracker(mContext);
+        eventsTracker.setSkuDetails("com.example.usercare.demo.click", "Sample Title", "26.55USD", "USD");
+        eventsTracker.sendPurchaseEvent("com.example.usercare.demo.click", "GPA.1384-6541-2372-70552", System.currentTimeMillis());
+        Toast.makeText(this, "Purchase successful", Toast.LENGTH_LONG).show();
     }
 
     private void setupCustomEvent() {
         String jsonBody = "{\"key1\", \"value1\", \"key2\", \"value2\", \"key3\", \"value3\"}";
-        EventsTracker.sendCustomEvent("custom_event", jsonBody);
+        new EventsTracker(mContext).sendCustomEvent("custom_event", jsonBody);
+    }
+
+    private void setupBuildVersion() {
+        TextView userInfoTextView = (TextView) findViewById(R.id.userInfoTextView);
+        userInfoTextView.setText("\nversion: " + BuildConfig.VERSION_NAME + " (build: " + getString(R.string.uc_build_number) + ")");
+    }
+
+    private void setupPushNotifications() {
+        if (UserCareUtils.isGooglePlayServicesAvailable(this)) {
+            if (UserCareGcmHandler.init(mContext).isPushTokenAvailable()) {
+                registerAppForPushNotifications();
+            }
+        }
+    }
+
+    private void setupInAppActions() {
+        startService(new Intent(mContext, ActionsListener.class));
+    }
+
+    private void registerAppForPushNotifications() {
+        if (UserCareUtils.isOnline(mContext)) {
+            Intent intent = new Intent(mContext, RegistrationIntentService.class);
+            startService(intent);
+        }
+    }
+
+    private void setupPurchaseHelper() {
+        mPurchaseHelper = new PurchaseHelper(this);
+        mHelper = mPurchaseHelper.setupPurchaseHelper();
     }
 
     @Override
@@ -173,105 +147,14 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
     }
 
-    /** Verifies the developer payload of a purchase. */
-    boolean verifyDeveloperPayload(Purchase p) {
-        String payload = p.getDeveloperPayload();
-
-        /*
-         * TODO: verify that the developer payload of the purchase is correct. It will be
-         * the same one that you sent when initiating the purchase.
-         *
-         * WARNING: Locally generating a random string when starting a purchase and
-         * verifying it here might seem like a good approach, but this will fail in the
-         * case where the user purchases an item on one device and then uses your app on
-         * a different device, because on the other device you will not have access to the
-         * random string you originally generated.
-         *
-         * So a good developer payload has these characteristics:
-         *
-         * 1. If two different users purchase an item, the payload is different between them,
-         *    so that one user's purchase can't be replayed to another user.
-         *
-         * 2. The payload must be such that you can verify it even when the app wasn't the
-         *    one who initiated the purchase flow (so that items purchased by the user on
-         *    one device work on other devices owned by the user).
-         *
-         * Using your own server to store and verify developer payloads across app
-         * installations is recommended.
-         */
-
-        return true;
-    }
-
-    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
-        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
-            Log.d(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
-
-            if (mHelper == null) return;
-
-            if (result.isFailure()) {
-                complain("Error purchasing: " + result, purchase);
-                return;
-            }
-            if (!verifyDeveloperPayload(purchase)) {
-                complain("Error purchasing. Authenticity verification failed.", purchase);
-                return;
-            }
-
-            Log.d(TAG, "Purchase successful.");
-
-            if (purchase.getSku().equals(ITEM_SKU)) {
-                Log.d(TAG, "Purchase is " + ITEM_SKU);
-                EventsTracker.sendPurchaseEvent(purchase.getSku(), purchase.getOrderId(), purchase.getPurchaseTime());
-                mHelper.consumeAsync(purchase, mConsumeFinishedListener);
-            }
-        }
-    };
-
-    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
-        public void onConsumeFinished(Purchase purchase, IabResult result) {
-            Log.d(TAG, "Consumption finished. Purchase: " + purchase + ", result: " + result);
-
-            if (mHelper == null) return;
-
-            if (result.isSuccess()) {
-                Log.d(TAG, "Consumption successful. Provisioning.");
-            }
-            else {
-                complain("Error while consuming: " + result);
-            }
-            Log.d(TAG, "End consumption flow.");
-        }
-    };
-
-    private void registerAppForPushNotifications() {
-        if (UserCareUtils.isOnline(mContext)) {
-            Intent intent = new Intent(mContext, RegistrationIntentService.class);
-            startService(intent);
-        }
-    }
-
-    private void complain(String message) {
-        complain(message, null);
-    }
-
-    private void complain(String message, Purchase purchase) {
-        Log.e(TAG, "**** Purchase Error: " + message);
-        if (purchase != null) {
-            EventsTracker.sendPurchaseFailedEvent(purchase.getSku(), purchase.getOrderId(), purchase.getPurchaseTime());
-        }
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if (mManager != null) {
             mManager.clear();
         }
-        Log.d(TAG, "Destroying helper.");
-        if (mHelper != null) {
-            mHelper.dispose();
-            mHelper = null;
+        if (mPurchaseHelper != null) {
+            mPurchaseHelper.destroy();
         }
     }
 
