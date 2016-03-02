@@ -39,10 +39,11 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.android.support:design:22.2.1'
     compile 'com.android.support:recyclerview-v7:22.2.1'
-    compile 'com.android.support:cardview-v7:22.2.1'
     compile 'com.google.android.gms:play-services-gcm:8.4.0'
+    compile 'com.github.usercare:usercaresdk:1.0.7'
+
+    compile 'com.android.support:cardview-v7:22.2.1'
     compile 'com.cocosw:bottomsheet:1.2.0'
-    compile project(':usercaresdk-release')
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;
     }
