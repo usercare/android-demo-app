@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/sideContainerLayout"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:background="@color/light_blue">
+
+            <ImageButton
+                android:id="@+id/crossButton"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:background="@mipmap/ic_close_white"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="25dp"
+                android:gravity="center|start"
+                android:text="Test settings"
+                android:textColor="@android:color/white"
+                android:textSize="19sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/saveSettingsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginRight="25dp"
+                android:gravity="center|end"
+                android:text="SAVE"
+                android:visibility="gone"
+                android:textColor="@android:color/white"
+                android:textSize="19sp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/shadow"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cache settings"
+            android:layout_gravity="center"
+            android:gravity="center"/>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="25dp">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ALL"
+                android:checked="true"
+                android:onClick="onRadioButtonClicked"
+                android:id="@+id/radioButtonAll"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NOTHING"
+                android:onClick="onRadioButtonClicked"
+                android:id="@+id/radioButtonNothing"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Top FAQs"
+                android:onClick="onRadioButtonClicked"
+                android:id="@+id/radioButtonFaqs"/>
+        </RadioGroup>
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -13,4 +13,12 @@
         android:id="@+id/crashEventButton"
         android:title="@string/send_crash_event"/>
 
+    <item
+        android:id="@+id/sendChatMessageButton"
+        android:title="@string/send_chat_message"/>
+
+    <item
+        android:id="@+id/clearCachedData"
+        android:title="@string/clear_cached_data"/>
+
 </menu>

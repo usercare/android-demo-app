@@ -6,5 +6,6 @@
     <string name="buy_click">Buy a click</string>
     <string name="send_custom_event">Send custom event</string>
     <string name="send_crash_event">Send crash event</string>
-
+    <string name="send_chat_message">Send chat message</string>
+    <string name="clear_cached_data">Clear cached data</string>
 </resources>

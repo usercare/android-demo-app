@@ -1,58 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawerLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@mipmap/background">
+    android:layout_height="match_parent">
 
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@mipmap/background">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <TextView
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="U  s  e  r\nC  a  r  e"
-                    android:textAllCaps="true"
-                    android:textColor="@android:color/white"
-                    android:textSize="17sp"
-                    android:textStyle="bold"/>
+                    android:layout_height="?attr/actionBarSize"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp">
 
-            </FrameLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="U  s  e  r\nC  a  r  e"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white"
+                        android:textSize="17sp"
+                        android:textStyle="bold"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="@drawable/shadow"/>
+                    <ImageButton
+                        android:id="@+id/testSettingsButton"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center|right"
+                        android:layout_marginRight="15dp"
+                        android:background="@mipmap/ic_settings_white"/>
 
-            <include
-                android:id="@+id/includeContentMain"
-                layout="@layout/content_main"/>
+                </FrameLayout>
 
-        </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="@drawable/shadow"/>
 
-    </ScrollView>
+                <include
+                    android:id="@+id/includeContentMain"
+                    layout="@layout/content_main"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="21dp"
-        android:scaleType="center"
-        android:src="@mipmap/fab"/>
+            </LinearLayout>
 
-</FrameLayout>
+        </ScrollView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="21dp"
+            android:scaleType="center"
+            android:src="@mipmap/fab"/>
+
+    </FrameLayout>
+
+    <include
+        layout="@layout/content_side"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"/>
+
+</android.support.v4.widget.DrawerLayout>

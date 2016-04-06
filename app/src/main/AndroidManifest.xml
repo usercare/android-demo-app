@@ -79,6 +79,8 @@
             </intent-filter>
         </receiver>
 
+        <service android:name="com.usercare.cache.UserCareCacheService"/>
+
         <service
             android:name="com.example.usercare.demo.gcm.GcmService"
             android:exported="false">
