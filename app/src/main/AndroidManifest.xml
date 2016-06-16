@@ -2,84 +2,35 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.example.usercare.demo">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <permission
+        android:name="com.example.usercare.demo.permission.C2D_MESSAGE"
+        android:protectionLevel="signature"/>
 
-    <permission android:name="com.example.usercare.demo.permission.C2D_MESSAGE"
-                android:protectionLevel="signature" />
-    <uses-permission android:name="com.example.usercare.demo.permission.C2D_MESSAGE" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-
-    <uses-permission android:name="com.android.vending.BILLING" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="com.example.usercare.demo.permission.C2D_MESSAGE"/>
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
 
     <application
         android:name=".UserCareApp"
         android:allowBackup="true"
-        android:largeHeap="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-
-        <meta-data android:name="com.google.android.gms.version"
-                   android:value="@integer/google_play_services_version" />
+        android:largeHeap="true"
+        android:theme="@style/AppTheme">
 
         <activity
             android:name=".SplashActivity"
             android:configChanges="orientation">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.example.usercare.demo.MainActivity"
             android:configChanges="orientation|screenSize">
         </activity>
-
-        <activity
-            android:name="com.usercare.messaging.MessagingActivity"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/UCMessagingTheme">
-        </activity>
-
-        <activity android:name="com.usercare.faq.activities.FaqActivity"
-                  android:theme="@style/UCFaqTheme"
-                  android:configChanges="orientation|screenSize"
-                  android:windowSoftInputMode="adjustPan|stateAlwaysHidden"/>
-        <activity android:name="com.usercare.faq.activities.FaqDetailsActivity"
-                  android:theme="@style/UCFaqTheme"
-                  android:configChanges="orientation|screenSize"/>
-
-        <activity android:name="com.usercare.activities.LandingPageActivity"
-                  android:configChanges="orientation|screenSize"/>
-
-        <activity android:name="com.usercare.activities.VipLoungeActivity"
-                  android:configChanges="orientation|screenSize"/>
-
-        <activity android:name="com.usercare.tickets.MyTicketsActivity"
-                  android:configChanges="orientation|screenSize"
-                  android:theme="@style/UCMyTicketsTheme"/>
-        <activity android:name="com.usercare.tickets.MyTicketsDetailsActivity"
-                  android:theme="@style/UCMyTicketsTheme"
-                  android:configChanges="orientation|screenSize"/>
-
-        <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="com.usercaredemo"/>
-            </intent-filter>
-        </receiver>
-
-        <service android:name="com.usercare.cache.UserCareCacheService"/>
 
         <service
             android:name="com.example.usercare.demo.gcm.GcmService"
@@ -100,21 +51,25 @@
             android:exported="false">
         </service>
 
-        <receiver
-            android:name="com.usercare.events.NetworkChangeReceiver"
-            android:label="NetworkChangeReceiver">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
-            </intent-filter>
-        </receiver>
-
-        <service android:name="com.example.usercare.demo.ActionsListener"
-                 android:exported="false"/>
+        <service
+            android:name="com.example.usercare.demo.ActionsListener"
+            android:exported="false"/>
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="0b95f0997837533af3beb4c928aed397ed1ee85f" />
+            android:value="0b95f0997837533af3beb4c928aed397ed1ee85f"/>
+
+        <!-- UserCare configuration -->
+        <meta-data
+            android:name="UC_APP_ID"
+            android:value="YOUR_APP_ID"/>
+        <meta-data
+            android:name="UC_API_KEY"
+            android:value="YOUR_API_KEY"/>
+        <meta-data
+            android:name="UC_GCM_PUSH_TOKEN"
+            android:value="YOUR_GCM_TOKEN"/>
+        <!-- UserCare configuration -->
 
     </application>
 

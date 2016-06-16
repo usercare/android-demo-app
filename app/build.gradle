@@ -14,6 +14,9 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
+def UC_VERSION_NAME = '1.0.10'
+def UC_VERSION_CODE = 3
+
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
@@ -22,8 +25,8 @@ android {
         applicationId "com.example.usercare.demo"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0.9"
+        versionCode UC_VERSION_CODE
+        versionName UC_VERSION_NAME
     }
     buildTypes {
         release {
@@ -31,16 +34,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'com.android.support:design:22.2.1'
-    compile 'com.android.support:recyclerview-v7:22.2.1'
-    compile 'com.google.android.gms:play-services-gcm:8.4.0'
-    // compile 'com.github.usercare:usercaresdk:1.0.9'
-    // or
-    compile project(':UserCareSDK-Android-v1.0.9')
+    // option №1: online sdk library
+    // (folder UserCareSDK-Android-vx.x.x don't need, in root settings.gradle ':UserCareSDK-Android-v1.0.10'-don't need as well )
+    compile 'com.github.usercare:usercaresdk:1.0.10'
 
     compile 'com.android.support:cardview-v7:22.2.1'
     compile 'com.cocosw:bottomsheet:1.2.0'
@@ -48,4 +50,28 @@ dependencies {
         transitive = true;
     }
 
+    // option №2: offline sdk library
+    /*compile project(':UserCareSDK-Android-v1.0.10')
+
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:design:22.2.1'
+    compile 'com.android.support:recyclerview-v7:22.2.1'
+    compile 'com.google.android.gms:play-services-gcm:8.4.0'
+    compile 'com.google.android.gms:play-services-ads:8.4.0'
+
+    compile 'com.android.support:cardview-v7:22.2.1'
+    compile 'com.cocosw:bottomsheet:1.2.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
+        transitive = true;
+    }
+
+    compile 'io.reactivex:rxandroid:1.2.0'
+    compile 'net.jokubasdargis.rxbus:rxbus-android:1.2.0'
+    // << retrofit2
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+    // >>
+    compile 'com.f2prateek.rx.preferences:rx-preferences:1.0.1'*/
 }
