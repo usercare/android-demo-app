@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.cocosw.bottomsheet.BottomSheet;
 import com.example.usercare.demo.gcm.RegistrationIntentService;
 import com.example.usercare.demo.purchase.IabHelper;
+import com.google.gson.annotations.SerializedName;
 import com.usercare.UserCare;
 import com.usercare.cache.UserCareCacheSettings;
 import com.usercare.callbacks.UserCareErrorCallback;
@@ -37,6 +38,9 @@ import com.usercare.messaging.MessagingActivity;
 import com.usercare.messaging.UserCareMessagingClient;
 import com.usercare.network.socket.OnSocketConnectedListener;
 import com.usercare.network.socket.SocketIOClientListener;
+
+import rx.Observer;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity implements
 		UserCareMessagingCallbacks, UserCareErrorCallback, UserCareSdkInitializationFinishedListener {
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements
 	private FrameLayout mSideFrameLayout;
 
 	private int mNewMessageCounter = 0;
-	private com.usercare.utils.Configuration configuration;
+	private com.usercare.system.Configuration configuration;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -132,21 +136,8 @@ public class MainActivity extends AppCompatActivity implements
 				switch (which) {
 					case R.id.btn_update_usercare_status:
 						mManager = new UserCareAppStatusManager(MainActivity.this, configuration.getCustomerId(), configuration.getAppId());
-//                        mManager.setUserProperties("John", "Doe", "test@test.com");
-//                        mManager.setUserProperty("custom_property_key", "custom_property_value");
-						/**
-						 * UI customisation if need
-						 */
-						/*mManager.setInitializeListener(new UserCareAppStatusManager.InitializeListener() {
-							@Override
-							public UserCareAppSettings onInitDevice(UserCareAppSettings userCareAppSettings) {
-								// some developer customization ....
-								if (!userCareAppSettings.isValid()) {
-									// need fix userCareAppSettings
-								}
-								return userCareAppSettings;
-							}
-						});*/
+						//mManager.setUserProperties("John", "Doe", "test@test.com");
+						//mManager.setUserProperty("custom_property_key", "custom_property_value");
 						mManager.updateAppStatus();
 						/**
 						 * Custom local option disable Settings user in Message View on open
@@ -246,8 +237,24 @@ public class MainActivity extends AppCompatActivity implements
 	}
 
 	private void setupCustomEvent() {
-		String jsonBody = "{\"key1\", \"value1\", \"key2\", \"value2\", \"key3\", \"value3\"}";
-		new EventsTracker(mContext).sendCustomEvent("custom_event", jsonBody);
+		new EventsTracker(mContext).sendCustomEventRx("custom_event_gson_rx", CustomGsonEvenet.getDemo())
+				.subscribeOn(Schedulers.computation())
+				.subscribe(new Observer<Boolean>() {
+					@Override
+					public void onCompleted() {
+						Log.d(TAG, " onCompleted ");
+					}
+
+					@Override
+					public void onError(Throwable e) {
+						e.printStackTrace();
+					}
+
+					@Override
+					public void onNext(Boolean aBoolean) {
+						Log.d(TAG, "onNext aBoolean = " + aBoolean);
+					}
+				});
 	}
 
 	private void setupBuildVersion() {
@@ -381,4 +388,19 @@ public class MainActivity extends AppCompatActivity implements
 		Log.d(TAG, "usercareSdkInitializationFinished = " + b);
 	}
 
+	private static class CustomGsonEvenet {
+
+		@SerializedName("event_id")
+		private int eventId;
+
+		@SerializedName("event_message")
+		private String eventMessage;
+
+		static CustomGsonEvenet getDemo() {
+			CustomGsonEvenet demo = new CustomGsonEvenet();
+			demo.eventId = 25574;
+			demo.eventMessage = "CustomGsonEvenet Demo message for test";
+			return demo;
+		}
+	}
 }
