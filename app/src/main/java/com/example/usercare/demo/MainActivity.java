@@ -39,6 +39,7 @@ import com.usercare.messaging.UserCareMessagingClient;
 import com.usercare.network.socket.OnSocketConnectedListener;
 import com.usercare.network.socket.SocketIOClientListener;
 
+import rx.Observable;
 import rx.Observer;
 import rx.schedulers.Schedulers;
 
@@ -237,24 +238,27 @@ public class MainActivity extends AppCompatActivity implements
 	}
 
 	private void setupCustomEvent() {
-		new EventsTracker(mContext).sendCustomEventRx("custom_event_gson_rx", CustomGsonEvenet.getDemo())
-				.subscribeOn(Schedulers.computation())
-				.subscribe(new Observer<Boolean>() {
-					@Override
-					public void onCompleted() {
-						Log.d(TAG, " onCompleted ");
-					}
+		Observable<Boolean> customEventObs = new EventsTracker(mContext)
+				.sendCustomEventRx("custom_event_gson_rx", CustomGsonEvenet.getDemo());
+		if (customEventObs != null) {
+			customEventObs.subscribeOn(Schedulers.computation())
+					.subscribe(new Observer<Boolean>() {
+						@Override
+						public void onCompleted() {
+							Log.d(TAG, " onCompleted ");
+						}
 
-					@Override
-					public void onError(Throwable e) {
-						e.printStackTrace();
-					}
+						@Override
+						public void onError(Throwable e) {
+							e.printStackTrace();
+						}
 
-					@Override
-					public void onNext(Boolean aBoolean) {
-						Log.d(TAG, "onNext aBoolean = " + aBoolean);
-					}
-				});
+						@Override
+						public void onNext(Boolean aBoolean) {
+							Log.d(TAG, "onNext aBoolean = " + aBoolean);
+						}
+					});
+		}
 	}
 
 	private void setupBuildVersion() {

@@ -32,6 +32,18 @@
             android:configChanges="orientation|screenSize">
         </activity>
 
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
+
+                <category android:name="com.example.usercare.demo"/>
+            </intent-filter>
+        </receiver>
+
         <service
             android:name="com.example.usercare.demo.gcm.GcmService"
             android:exported="false">
@@ -51,13 +63,22 @@
             android:exported="false">
         </service>
 
+        <receiver
+            android:name="com.usercare.events.NetworkChangeReceiver"
+            android:label="NetworkChangeReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED"/>
+            </intent-filter>
+        </receiver>
+
         <service
             android:name="com.example.usercare.demo.ActionsListener"
             android:exported="false"/>
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="YOUR_FABRIC_API_KEY"/>
+            android:value="b938ed695b84163b5d607b7f94f5264d3ddcbd0e"/>
 
         <!-- UserCare configuration -->
         <meta-data
