@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements
 
 	private int mNewMessageCounter = 0;
 	private com.usercare.system.Configuration configuration;
+	private UserCareSdkInitializationFinishedListener sdkInitializationFinishedListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +83,21 @@ public class MainActivity extends AppCompatActivity implements
 		if (savedInstanceState == null) {
 			setupPushNotifications();
 			setupInAppActions();
+		}
+
+		initCallBackSDKInitialization();
+	}
+
+	private void initCallBackSDKInitialization() {
+		if (sdkInitializationFinishedListener == null) {
+			sdkInitializationFinishedListener = new UserCareSdkInitializationFinishedListener() {
+
+				@Override
+				public void usercareSdkInitializationFinished(boolean sdkInitializationResult) {
+					Log.i(TAG, "sdkInitializationResult = " + sdkInitializationResult);
+				}
+			};
+			UserCareCallbackManager.getInstance().setSdkInitializationFinishedListener(sdkInitializationFinishedListener);
 		}
 	}
 
@@ -340,6 +356,7 @@ public class MainActivity extends AppCompatActivity implements
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		UserCareCallbackManager.getInstance().removeSdkInitializationFinishedListener(sdkInitializationFinishedListener);
 		if (mManager != null) {
 			mManager.clear();
 		}
