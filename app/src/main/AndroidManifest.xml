@@ -19,7 +19,8 @@
 
         <activity
             android:name=".SplashActivity"
-            android:configChanges="orientation">
+            android:configChanges="orientation"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -29,7 +30,123 @@
 
         <activity
             android:name="com.example.usercare.demo.MainActivity"
-            android:configChanges="orientation|screenSize">
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleInstance">
+        </activity>
+
+        <activity
+            android:name="com.usercare.faq.activities.FaqDetailsActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleInstance"
+            android:theme="@style/UCFaqTheme">
+            <intent-filter android:label="@string/uc_deep_link_intent_filter_label">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:host="@string/uc_deep_link_host"
+                      android:pathPrefix="@string/us_deep_link_faq_details"
+                      android:scheme="@string/https"/>
+                <data android:host="@string/uc_deep_link_host"
+                      android:pathPrefix="@string/us_deep_link_faq_details"
+                      android:scheme="@string/http"/>
+            </intent-filter>
+            <intent-filter android:label="@string/uc_deep_link_intent_filter_label">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:host="@string/us_deep_link_faq_host"
+                      android:scheme="@string/us_deep_link_usercare_scheme"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.usercare.faq.activities.FaqActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleInstance"
+            android:theme="@style/UCFaqTheme"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
+            <intent-filter android:label="@string/uc_deep_link_intent_filter_label">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:host="@string/uc_deep_link_host"
+                      android:pathPrefix="@string/us_deep_link_section_faq"
+                      android:scheme="@string/https"/>
+                <data android:host="@string/uc_deep_link_host"
+                      android:pathPrefix="@string/us_deep_link_section_faq"
+                      android:scheme="@string/http"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.usercare.messaging.MessagingActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleInstance"
+            android:theme="@style/UCMessagingTheme"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+            <intent-filter android:label="@string/uc_deep_link_intent_filter_label">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:host="@string/uc_deep_link_host"
+                      android:path="@string/us_deep_link_chat"
+                      android:scheme="@string/https"/>
+                <data android:host="@string/uc_deep_link_host"
+                      android:path="@string/us_deep_link_chat"
+                      android:scheme="@string/http"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.usercare.tickets.MyTicketsActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleInstance"
+            android:theme="@style/UCMyTicketsTheme">
+            <intent-filter android:label="@string/uc_deep_link_intent_filter_label">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:host="@string/uc_deep_link_host"
+                      android:path="@string/us_deep_link_tickets"
+                      android:scheme="@string/https"/>
+                <data android:host="@string/uc_deep_link_host"
+                      android:path="@string/us_deep_link_tickets"
+                      android:scheme="@string/http"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.usercare.activities.LandingPageActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleInstance">
+            <intent-filter android:label="@string/uc_deep_link_intent_filter_label">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:host="@string/uc_deep_link_host"
+                      android:path="@string/us_deep_link_landing_page"
+                      android:scheme="@string/https"/>
+                <data android:host="@string/uc_deep_link_host"
+                      android:path="@string/us_deep_link_landing_page"
+                      android:scheme="@string/http"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.usercare.activities.VipLoungeActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleInstance">
+            <intent-filter android:label="@string/uc_deep_link_intent_filter_label">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:host="@string/uc_deep_link_host"
+                      android:path="@string/us_deep_link_viplounge"
+                      android:scheme="@string/https"/>
+                <data android:host="@string/uc_deep_link_host"
+                      android:path="@string/us_deep_link_viplounge"
+                      android:scheme="@string/http"/>
+            </intent-filter>
         </activity>
 
         <receiver

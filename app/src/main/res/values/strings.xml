@@ -8,4 +8,8 @@
     <string name="send_crash_event">Send crash event</string>
     <string name="send_chat_message">Send chat message</string>
     <string name="clear_cached_data">Clear cached data</string>
+
+    <!-- Deep link -->
+    <string name="uc_deep_link_intent_filter_label">Usercare (or your own dev. label)</string>
+    <!-- Deep link -->
 </resources>

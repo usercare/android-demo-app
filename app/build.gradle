@@ -14,8 +14,8 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
-def UC_VERSION_NAME = '1.0.11'
-def UC_VERSION_CODE = 4
+def UC_VERSION_NAME = '1.0.12.1'
+def UC_VERSION_CODE = 7
 
 android {
     compileSdkVersion 22
@@ -44,7 +44,7 @@ dependencies {
     // ( in this option folders UserCareSDK-Android-vx.x.x and UserCareSDK-crashlytics-vx.x.x
     // don't need, in root settings.gradle ':UserCareSDK-Android-vx.x.x' ':UserCareSDK-crashlytics-vx.x.x'
     // -don't need as well )
-    compile 'com.github.usercare:usercaresdk:1.0.11.1'
+    compile 'com.github.usercare:usercaresdk:1.0.12.1'
     // Optional. If You going to use crashlytics
     compile 'com.github.usercare:crashlytics-uc:1.0.2'
 
@@ -52,7 +52,7 @@ dependencies {
     compile 'com.cocosw:bottomsheet:1.2.0'
 
     // option №2: offline sdk library
-    /*compile project(path: ':UserCareSDK-Android-v1.0.11.1')
+    /*compile project(path: ':UserCareSDK-Android-v1.0.12.1')
     // Optional. If You going to use crashlytics
     compile project(path: ':UserCareSDK-crashlytics-v1.0.2')
 

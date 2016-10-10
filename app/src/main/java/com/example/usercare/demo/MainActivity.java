@@ -25,9 +25,8 @@ import com.example.usercare.demo.purchase.IabHelper;
 import com.google.gson.annotations.SerializedName;
 import com.usercare.UserCare;
 import com.usercare.cache.UserCareCacheSettings;
-import com.usercare.callbacks.UserCareErrorCallback;
-import com.usercare.callbacks.UserCareMessagingCallbacks;
-import com.usercare.callbacks.UserCareSdkInitializationFinishedListener;
+import com.usercare.callbacks.error.ErrorEntity;
+import com.usercare.callbacks.message.MessageEntity;
 import com.usercare.events.EventsTracker;
 import com.usercare.gcm.UserCareGcmHandler;
 import com.usercare.managers.UserCareAppStatusManager;
@@ -41,10 +40,10 @@ import com.usercare.network.socket.SocketIOClientListener;
 
 import rx.Observable;
 import rx.Observer;
+import rx.Subscription;
 import rx.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity implements
-		UserCareMessagingCallbacks, UserCareErrorCallback, UserCareSdkInitializationFinishedListener {
+public class MainActivity extends AppCompatActivity {
 
 	private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -61,7 +60,9 @@ public class MainActivity extends AppCompatActivity implements
 
 	private int mNewMessageCounter = 0;
 	private com.usercare.system.Configuration configuration;
-	private UserCareSdkInitializationFinishedListener sdkInitializationFinishedListener;
+	private Subscription sdkInitializationSubscriber;
+	private Subscription sdkErrorSubscription;
+	private Subscription sdkMassageSubscriber;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,27 +85,95 @@ public class MainActivity extends AppCompatActivity implements
 			setupPushNotifications();
 			setupInAppActions();
 		}
-
-		initCallBackSDKInitialization();
+		initCallBacksSDK();
 	}
 
-	private void initCallBackSDKInitialization() {
-		if (sdkInitializationFinishedListener == null) {
-			sdkInitializationFinishedListener = new UserCareSdkInitializationFinishedListener() {
+	private void initCallBacksSDK() {
 
-				@Override
-				public void usercareSdkInitializationFinished(boolean sdkInitializationResult) {
-					Log.i(TAG, "sdkInitializationResult = " + sdkInitializationResult);
+		// Just for test callBacks:
+		UserCareCallbackManager userCareCallbackManager = UserCareCallbackManager.getInstance();
+
+		sdkMassageSubscriber = userCareCallbackManager.getSdkMessagingSubscription(new Observer<Object>() {
+			@Override
+			public void onCompleted() {
+			}
+
+			@Override
+			public void onError(Throwable e) {
+				Log.e(TAG," Messagin subscription error : " + e.toString());
+			}
+
+			@Override
+			public void onNext(Object object) {
+				if (object != null) {
+					if (object instanceof ActionEntity) {
+						ActionEntity actionEntity = null;
+						try {
+							actionEntity = (ActionEntity) object;
+						} catch (ClassCastException e) {
+							Log.e(TAG," Couldn't cast Object class to ActionEntity : " + e.toString());
+						}
+						if (actionEntity != null) {
+							Log.d(TAG," Message callBack : ActionText = " + actionEntity.getActionText()
+									+ " ActionTimestamp = " + actionEntity.getActionTimestamp());
+						}
+					} else {
+						MessageEntity messageEntity = null;
+						try {
+							messageEntity = (MessageEntity) object;
+						} catch (ClassCastException e) {
+							Log.e(TAG," Couldn't cast Object class to MessageEntity : " + e.toString());
+						}
+						if (messageEntity != null) {
+							Log.d(TAG," Message callBack : MessageText = " + messageEntity.getMessage()
+									+ "; ActionTimestamp = " + messageEntity.getTimestamp() + "; Message Type = " + messageEntity.getType());
+						}
+					}
 				}
-			};
-			UserCareCallbackManager.getInstance().setSdkInitializationFinishedListener(sdkInitializationFinishedListener);
-		}
+			}
+		});
+
+		sdkInitializationSubscriber = userCareCallbackManager.getSdkInitializationSubscription(new Observer<Boolean>() {
+			@Override
+			public void onCompleted() {
+			}
+
+			@Override
+			public void onError(Throwable e) {
+				Log.e(TAG," Error sdk initialization subscription : " + e.toString());
+			}
+
+			@Override
+			public void onNext(Boolean result) {
+				Log.d(TAG," SdkInitialization result = " + result);
+			}
+		});
+
+		sdkErrorSubscription = userCareCallbackManager.getSdkErrorSubscription(new Observer<Throwable>() {
+			@Override
+			public void onCompleted() {
+			}
+
+			@Override
+			public void onError(Throwable e) {
+				Log.e(TAG," Error sdk error subscription " + e.toString());
+			}
+
+			@Override
+			public void onNext(Throwable throwable) {
+				if (throwable != null) {
+					if (throwable instanceof ErrorEntity) {
+						ErrorEntity errorEntity = (ErrorEntity) throwable;
+						Log.d(TAG," Error sdk result = " + errorEntity.toString() + " ; status code = " + errorEntity.getStatusCode());
+					} else {
+						Log.d(TAG," Error sdk result = " + throwable.toString());
+					}
+				}
+			}
+		});
 	}
 
 	private void setupUserCareControllers() {
-		UserCareCallbackManager.getInstance().setSdkInitializationFinishedListener(this);
-		UserCareCallbackManager.getInstance().setUserCareMessagingCallbacks(this);
-		UserCareCallbackManager.getInstance().setUserCareErrorCallback(this);
 
 		findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -356,57 +425,32 @@ public class MainActivity extends AppCompatActivity implements
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		UserCareCallbackManager.getInstance().removeSdkInitializationFinishedListener(sdkInitializationFinishedListener);
+
 		if (mManager != null) {
 			mManager.clear();
 		}
 		if (mPurchaseHelper != null) {
 			mPurchaseHelper.destroy();
 		}
+		if (sdkInitializationSubscriber != null && !sdkInitializationSubscriber.isUnsubscribed()) {
+			sdkInitializationSubscriber.unsubscribe();
+		}
+
+		if (sdkErrorSubscription != null && !sdkErrorSubscription.isUnsubscribed()) {
+			sdkErrorSubscription.unsubscribe();
+		}
+
+		if (sdkMassageSubscriber != null && !sdkMassageSubscriber.isUnsubscribed()) {
+			sdkMassageSubscriber.unsubscribe();
+		}
+
+		sdkErrorSubscription = null;
+		sdkInitializationSubscriber = null;
+		sdkMassageSubscriber = null;
 	}
 
 	private void openActivityDirectly() {
 		startActivity(new Intent(this, MessagingActivity.class)); // or MyTicketsActivity / FaqActivity / LandingPageActivity
-	}
-
-	@Override
-	public void usercareSdkFailedWithError(int i, Throwable throwable) {
-		Log.d(TAG, "usercareSdkFailedWithError statusCode = " + i);
-		Log.d(TAG, "usercareSdkFailedWithError error = " + throwable.getMessage());
-	}
-
-	@Override
-	public void usercareSdkFailedWithError(Throwable throwable) {
-		Log.d(TAG, "usercareSdkFailedWithError error = " + throwable.getMessage());
-	}
-
-	@Override
-	public void onActionMessageReceived(ActionEntity actionEntity) {
-		Log.d(TAG, "actionEntity.getActionText() = " + actionEntity.getActionText());
-		Log.d(TAG, "actionEntity.getActionImageUrl() = " + actionEntity.getActionImageUrl());
-	}
-
-	@Override
-	public void onSystemMessageReceived(String s, String s1) {
-		Log.d(TAG, "onSystemMessageReceived = " + s);
-		Log.d(TAG, "onSystemMessageReceived = " + s1);
-	}
-
-	@Override
-	public void onSupporterMessageReceived(String s, String s1) {
-		Log.d(TAG, "onSupporterMessageReceived = " + s);
-		Log.d(TAG, "onSupporterMessageReceived = " + s1);
-	}
-
-	@Override
-	public void onCustomerMessageReceived(String s, String s1) {
-		Log.d(TAG, "onCustomerMessageReceived = " + s);
-		Log.d(TAG, "onCustomerMessageReceived = " + s1);
-	}
-
-	@Override
-	public void usercareSdkInitializationFinished(boolean b) {
-		Log.d(TAG, "usercareSdkInitializationFinished = " + b);
 	}
 
 	private static class CustomGsonEvenet {
