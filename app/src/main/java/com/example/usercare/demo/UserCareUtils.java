@@ -7,7 +7,6 @@ import android.net.NetworkInfo;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 
 public final class UserCareUtils {
 
@@ -25,19 +24,27 @@ public final class UserCareUtils {
 	}
 
 	public static boolean isGooglePlayServicesAvailable(Activity activity) {
-		if (activity == null)
-			return false;
-		GoogleApiAvailability gApiAvailability = GoogleApiAvailability.getInstance();
-		int resultCode = gApiAvailability.isGooglePlayServicesAvailable(activity.getApplicationContext());
-		if (resultCode != ConnectionResult.SUCCESS) {
-			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-				GooglePlayServicesUtil.getErrorDialog(resultCode, activity, 9000).show();
-			} else {
-				activity.finish();
+		if (activity != null && !activity.isFinishing()) {
+			int connectionResult = isGooglePlayServicesAvailable(activity.getApplicationContext());
+			if (connectionResult != ConnectionResult.SUCCESS) {
+				GoogleApiAvailability gApiAvailability = GoogleApiAvailability.getInstance();
+				if (gApiAvailability.isUserResolvableError(connectionResult)) {
+					gApiAvailability.getErrorDialog(activity, connectionResult, -1).show();
+				} else {
+					activity.finish();
+				}
+				return false;
 			}
-			return false;
 		}
 		return true;
+	}
+
+	public static int isGooglePlayServicesAvailable(Context context) {
+		if (context != null) {
+			GoogleApiAvailability gApiAvailability = GoogleApiAvailability.getInstance();
+			return gApiAvailability.isGooglePlayServicesAvailable(context);
+		}
+		return ConnectionResult.DEVELOPER_ERROR;
 	}
 
 }

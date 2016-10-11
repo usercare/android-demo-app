@@ -60,9 +60,9 @@ public class MainActivity extends AppCompatActivity {
 
 	private int mNewMessageCounter = 0;
 	private com.usercare.system.Configuration configuration;
-	private Subscription sdkInitializationSubscriber;
+	private Subscription sdkInitializationSubscription;
 	private Subscription sdkErrorSubscription;
-	private Subscription sdkMassageSubscriber;
+	private Subscription sdkMassageSubscription;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 		// Just for test callBacks:
 		UserCareCallbackManager userCareCallbackManager = UserCareCallbackManager.getInstance();
 
-		sdkMassageSubscriber = userCareCallbackManager.getSdkMessagingSubscription(new Observer<Object>() {
+		sdkMassageSubscription = userCareCallbackManager.getSdkMessagingSubscription(new Observer<Object>() {
 			@Override
 			public void onCompleted() {
 			}
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
 			}
 		});
 
-		sdkInitializationSubscriber = userCareCallbackManager.getSdkInitializationSubscription(new Observer<Boolean>() {
+		sdkInitializationSubscription = userCareCallbackManager.getSdkInitializationSubscription(new Observer<Boolean>() {
 			@Override
 			public void onCompleted() {
 			}
@@ -432,21 +432,21 @@ public class MainActivity extends AppCompatActivity {
 		if (mPurchaseHelper != null) {
 			mPurchaseHelper.destroy();
 		}
-		if (sdkInitializationSubscriber != null && !sdkInitializationSubscriber.isUnsubscribed()) {
-			sdkInitializationSubscriber.unsubscribe();
+		if (sdkInitializationSubscription != null && !sdkInitializationSubscription.isUnsubscribed()) {
+			sdkInitializationSubscription.unsubscribe();
 		}
 
 		if (sdkErrorSubscription != null && !sdkErrorSubscription.isUnsubscribed()) {
 			sdkErrorSubscription.unsubscribe();
 		}
 
-		if (sdkMassageSubscriber != null && !sdkMassageSubscriber.isUnsubscribed()) {
-			sdkMassageSubscriber.unsubscribe();
+		if (sdkMassageSubscription != null && !sdkMassageSubscription.isUnsubscribed()) {
+			sdkMassageSubscription.unsubscribe();
 		}
 
 		sdkErrorSubscription = null;
-		sdkInitializationSubscriber = null;
-		sdkMassageSubscriber = null;
+		sdkInitializationSubscription = null;
+		sdkMassageSubscription = null;
 	}
 
 	private void openActivityDirectly() {
