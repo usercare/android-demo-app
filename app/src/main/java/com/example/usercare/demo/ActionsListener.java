@@ -1,5 +1,7 @@
 package com.example.usercare.demo;
 
+import android.util.Log;
+
 import com.usercare.gcm.UserCareInAppActionsListener;
 
 import java.util.HashSet;
@@ -24,6 +26,7 @@ public class ActionsListener extends UserCareInAppActionsListener {
     @Override
     public void onActionCallbackReceived(String callbackName, String callbackData) {
         // TODO: Handle as necessary
+        Log.d(ActionsListener.class.getSimpleName(),"ActionsListener -> onActionCallbackReceived : callbackName = " + callbackName + " callbackData = " + callbackData);
     }
 
 }

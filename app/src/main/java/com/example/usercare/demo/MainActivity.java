@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
 					}
 				}
 			}
-		});
+		}, Schedulers.computation());
 
 		sdkInitializationSubscription = userCareCallbackManager.getSdkInitializationSubscription(new Observer<Boolean>() {
 			@Override
