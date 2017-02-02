@@ -200,10 +200,10 @@
         <!-- AgentAI configuration -->
         <meta-data
             android:name="UC_APP_ID"
-            android:value="YOUR_UC_APP_ID"/>
+            android:value="zWQL0qcV63kph0u4SGu47w"/>
         <meta-data
             android:name="UC_API_KEY"
-            android:value="YOUR_UC_API_KEY"/>
+            android:value="AHTBGLXNFVJGI000753DGA27E5XSLDSLGIDKON7OVM"/>
         <meta-data
             android:name="UC_GCM_PUSH_TOKEN"
             android:value="YOUR_GCM_TOKEN"/>
