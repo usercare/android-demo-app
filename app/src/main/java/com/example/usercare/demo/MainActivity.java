@@ -125,9 +125,14 @@ public class MainActivity extends AppCompatActivity {
 							Log.e(TAG," Couldn't cast Object class to MessageEntity : " + e.toString());
 						}
 						if (messageEntity != null) {
-							Log.d(TAG," Message callBack : MessageText = " + messageEntity.getMessage()
-									+ "; ActionTimestamp = " + messageEntity.getTimestamp() + "; Message Type = " + messageEntity.getType());
+							String logMsg = " Message callBack : MessageText = " + messageEntity.getMessage()
+									+ "; ActionTimestamp = " + messageEntity.getTimestamp() + "; Message Type = " + messageEntity.getType();
+							if (messageEntity.getChatMessageContent() != null) {
+								logMsg = logMsg.concat(" ").concat(messageEntity.getChatMessageContent().toString());
+							}
+							Log.d(TAG,logMsg);
 						}
+
 					}
 				}
 			}
@@ -269,14 +274,14 @@ public class MainActivity extends AppCompatActivity {
 
 		@Override
 		public void messageSent(LiveChatSystemMessage message) {
-			Log.i(TAG, "messageSent =" + message.getText() + " " + message.getFromRole() + " " + message.getTimestamp());
+			Log.i(TAG, "messageSent =" + message.getText() + " " + message.getFromRoles() + " " + message.getTimestamp());
 		}
 
 		@Override
 		public void newMessage(LiveChatSystemMessage message) {
 			switch (message.getType()) {
 				case LiveChatSystemMessage.TYPE_REGULAR_SYSTEM_MESSAGE:
-					Log.i(TAG, "TYPE_REGULAR_SYSTEM_MESSAGE = " + message.getText() + " " + message.getFromRole() + " " + message.getTimestamp());
+					Log.i(TAG, "TYPE_REGULAR_SYSTEM_MESSAGE = " + message.getText() + " " + message.getFromRoles() + " " + message.getTimestamp());
 					break;
 				case LiveChatSystemMessage.TYPE_BONUS_PRESENTED_MESSAGE:
 					Log.i(TAG, "TYPE_BONUS_PRESENTED_MESSAGE = " + message.getText() + " " + message.getImageUrl() + " " + message.getTimestamp());

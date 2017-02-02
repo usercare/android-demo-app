@@ -30,7 +30,7 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="U  s  e  r\nC  a  r  e"
+                        android:text="A g e n t A I"
                         android:textAllCaps="true"
                         android:textColor="@android:color/white"
                         android:textSize="17sp"
