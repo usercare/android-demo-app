@@ -6,11 +6,6 @@
         <item name="colorControlNormal">@color/colorPrimary</item>
         <item name="colorControlActivated">@color/colorPrimaryDark</item>
         <item name="colorControlHighlight">@color/colorPrimaryDark</item>
-        <item name="bottomSheetStyle">@style/BottomSheet.StyleDialog</item>
-    </style>
-
-    <style name="BottomSheet.StyleDialog" parent="BottomSheet.Dialog">
-        <item name="bs_dialogBackground">@color/bottom_sheet_color</item>
     </style>
 
 </resources>

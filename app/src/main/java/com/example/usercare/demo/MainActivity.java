@@ -1,13 +1,14 @@
 package com.example.usercare.demo;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
@@ -19,7 +20,6 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cocosw.bottomsheet.BottomSheet;
 import com.example.usercare.demo.gcm.RegistrationIntentService;
 import com.example.usercare.demo.purchase.IabHelper;
 import com.google.gson.annotations.SerializedName;
@@ -63,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
 	private Subscription sdkInitializationSubscription;
 	private Subscription sdkErrorSubscription;
 	private Subscription sdkMassageSubscription;
+	private NestedScrollView bottomSheet;
+	private BottomSheetBehavior<NestedScrollView> bottomSheetBehavior;
+	private View.OnClickListener bottomSheetClickListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
 		setupSidebar();
 		setupUserCareControllers();
 		setupPurchaseHelper();
+		initBottomSheet();
 
 		if (savedInstanceState == null) {
 			setupPushNotifications();
@@ -100,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
 			@Override
 			public void onError(Throwable e) {
-				Log.e(TAG," Messagin subscription error : " + e.toString());
+				Log.e(TAG, " Messagin subscription error : " + e.toString());
 			}
 
 			@Override
@@ -111,10 +115,10 @@ public class MainActivity extends AppCompatActivity {
 						try {
 							actionEntity = (ActionEntity) object;
 						} catch (ClassCastException e) {
-							Log.e(TAG," Couldn't cast Object class to ActionEntity : " + e.toString());
+							Log.e(TAG, " Couldn't cast Object class to ActionEntity : " + e.toString());
 						}
 						if (actionEntity != null) {
-							Log.d(TAG," Message callBack : ActionText = " + actionEntity.getActionText()
+							Log.d(TAG, " Message callBack : ActionText = " + actionEntity.getActionText()
 									+ " ActionTimestamp = " + actionEntity.getActionTimestamp());
 						}
 					} else {
@@ -122,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
 						try {
 							messageEntity = (MessageEntity) object;
 						} catch (ClassCastException e) {
-							Log.e(TAG," Couldn't cast Object class to MessageEntity : " + e.toString());
+							Log.e(TAG, " Couldn't cast Object class to MessageEntity : " + e.toString());
 						}
 						if (messageEntity != null) {
 							String logMsg = " Message callBack : MessageText = " + messageEntity.getMessage()
@@ -130,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
 							if (messageEntity.getChatMessageContent() != null) {
 								logMsg = logMsg.concat(" ").concat(messageEntity.getChatMessageContent().toString());
 							}
-							Log.d(TAG,logMsg);
+							Log.d(TAG, logMsg);
 						}
 
 					}
@@ -145,12 +149,12 @@ public class MainActivity extends AppCompatActivity {
 
 			@Override
 			public void onError(Throwable e) {
-				Log.e(TAG," Error sdk initialization subscription : " + e.toString());
+				Log.e(TAG, " Error sdk initialization subscription : " + e.toString());
 			}
 
 			@Override
 			public void onNext(Boolean result) {
-				Log.d(TAG," SdkInitialization result = " + result);
+				Log.d(TAG, " SdkInitialization result = " + result);
 			}
 		});
 
@@ -161,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
 			@Override
 			public void onError(Throwable e) {
-				Log.e(TAG," Error sdk error subscription " + e.toString());
+				Log.e(TAG, " Error sdk error subscription " + e.toString());
 			}
 
 			@Override
@@ -169,9 +173,9 @@ public class MainActivity extends AppCompatActivity {
 				if (throwable != null) {
 					if (throwable instanceof ErrorEntity) {
 						ErrorEntity errorEntity = (ErrorEntity) throwable;
-						Log.d(TAG," Error sdk result = " + errorEntity.toString() + " ; status code = " + errorEntity.getStatusCode());
+						Log.d(TAG, " Error sdk result = " + errorEntity.toString() + " ; status code = " + errorEntity.getStatusCode());
 					} else {
-						Log.d(TAG," Error sdk result = " + throwable.toString());
+						Log.d(TAG, " Error sdk result = " + throwable.toString());
 					}
 				}
 			}
@@ -220,43 +224,66 @@ public class MainActivity extends AppCompatActivity {
 		}
 	}
 
-	private void setupBottomSheet() {
-		new BottomSheet.Builder(this, R.style.BottomSheet_StyleDialog).sheet(R.menu.menu_main).listener(new DialogInterface.OnClickListener() {
+	private void initBottomSheet() {
+		bottomSheet = (NestedScrollView) findViewById(R.id.bottom_sheet);
+		bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+
+		bottomSheetClickListener = new View.OnClickListener() {
 			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				switch (which) {
-					case R.id.btn_update_usercare_status:
-						mManager = new UserCareAppStatusManager(MainActivity.this, configuration.getCustomerId(), configuration.getAppId());
-						//mManager.setUserProperties("John", "Doe", "test@test.com");
-						//mManager.setUserProperty("custom_property_key", "custom_property_value");
-						mManager.updateAppStatus();
-						/**
-						 * Custom local option disable Settings user in Message View on open
-						 */
-						//mManager.setShouldShowUserSettingsView(false);
-						/**
-						 * Custom local option hide Settings button in Message View
-						 */
-						//mManager.setShouldShowSettingsBtn(false);
-						break;
-					case R.id.buyClickButton:
-//                        mPurchaseHelper.makePurchase();
-						sendPurchaseEvent();
-						break;
-					case R.id.customEventButton:
-						setupCustomEvent();
-						break;
-					case R.id.crashEventButton:
-						throw new NullPointerException();
-					case R.id.sendChatMessageButton:
-						setupMessagingClient();
-						break;
-					case R.id.clearCachedData:
-						mUserCareCacheSettings.clearApplicationData();
-						break;
+			public void onClick(View view) {
+				if (view != null) {
+					bottomSheetClicked(view.getId());
 				}
+				bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 			}
-		}).show();
+		};
+
+		findViewById(R.id.btn_update_usercare_status).setOnClickListener(bottomSheetClickListener);
+		findViewById(R.id.buyClickButton).setOnClickListener(bottomSheetClickListener);
+		findViewById(R.id.customEventButton).setOnClickListener(bottomSheetClickListener);
+		findViewById(R.id.crashEventButton).setOnClickListener(bottomSheetClickListener);
+		findViewById(R.id.sendChatMessageButton).setOnClickListener(bottomSheetClickListener);
+		findViewById(R.id.clearCachedData).setOnClickListener(bottomSheetClickListener);
+	}
+
+	private void bottomSheetClicked(int bottomSheetBtnId) {
+		switch (bottomSheetBtnId) {
+			case R.id.btn_update_usercare_status:
+				mManager = new UserCareAppStatusManager(MainActivity.this, configuration.getCustomerId(), configuration.getAppId());
+				//mManager.setUserProperties("John", "Doe", "test@test.com");
+				//mManager.setUserProperty("custom_property_key", "custom_property_value");
+				mManager.updateAppStatus();
+				/**
+				 * Custom local option disable Settings user in Message View on open
+				 */
+				//mManager.setShouldShowUserSettingsView(false);
+				/**
+				 * Custom local option hide Settings button in Message View
+				 */
+				//mManager.setShouldShowSettingsBtn(false);
+				break;
+			case R.id.buyClickButton:
+				// mPurchaseHelper.makePurchase();
+				sendPurchaseEvent();
+				break;
+			case R.id.customEventButton:
+				setupCustomEvent();
+				break;
+			case R.id.crashEventButton:
+				throw new NullPointerException();
+			case R.id.sendChatMessageButton:
+				setupMessagingClient();
+				break;
+			case R.id.clearCachedData:
+				mUserCareCacheSettings.clearApplicationData();
+				break;
+		}
+	}
+
+	private void setupBottomSheet() {
+		if (bottomSheetBehavior != null) {
+			bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+		}
 	}
 
 	private void setupMessagingClient() {
@@ -422,6 +449,8 @@ public class MainActivity extends AppCompatActivity {
 	public void onBackPressed() {
 		if (mDrawerLayout.isDrawerOpen(GravityCompat.END)) {
 			mDrawerLayout.closeDrawer(GravityCompat.END);
+		} else if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_COLLAPSED) {
+			bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 		} else {
 			super.onBackPressed();
 		}
@@ -449,6 +478,9 @@ public class MainActivity extends AppCompatActivity {
 			sdkMassageSubscription.unsubscribe();
 		}
 
+		bottomSheet = null;
+		bottomSheetBehavior = null;
+		bottomSheetClickListener = null;
 		sdkErrorSubscription = null;
 		sdkInitializationSubscription = null;
 		sdkMassageSubscription = null;
