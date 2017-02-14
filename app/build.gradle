@@ -16,12 +16,12 @@ repositories {
 
 def UC_VERSION_NAME = '1.0.14.2'
 def UC_VERSION_CODE = 12
-def supportLibVersion = '24.1.1'
+def supportLibVersion = '23.4.0'
 def playServicesLibVersion = '9.2.1'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '25.0.1'
+    buildToolsVersion '23.0.3'
 
     defaultConfig {
         applicationId "com.example.usercare.demo"
@@ -46,30 +46,36 @@ android {
 }
 
 dependencies {
+
+    compile "com.android.support:cardview-v7:$supportLibVersion"
+    compile "com.android.support:appcompat-v7:$supportLibVersion"
+    compile "com.android.support:design:$supportLibVersion"
+    compile "com.android.support:recyclerview-v7:$supportLibVersion"
+
     // option №1: online sdk library
     // ( in this option folders UserCareSDK-Android-vx.x.x and UserCareSDK-crashlytics-vx.x.x
     // don't need, in root settings.gradle ':UserCareSDK-Android-vx.x.x' ':UserCareSDK-crashlytics-vx.x.x'
     // -don't need as well )
-    compile 'com.github.usercare:usercaresdk:1.0.14.2'
+    compile('com.github.usercare:usercaresdk:1.0.14.2') {
+        exclude group: 'com.android.support'
+    }
     // Optional. If You going to use crashlytics
-    compile 'com.github.usercare:crashlytics-uc:1.0.2'
-
-    compile "com.android.support:cardview-v7:$supportLibVersion"
-    compile 'com.cocosw:bottomsheet:1.2.0'
+    compile('com.github.usercare:crashlytics-uc:1.0.2') {
+        exclude group: 'com.android.support'
+    }
 
     // option №2: offline sdk library
-    /*compile project(path: ':UserCareSDK-Android-v1.0.14.2')
+    /*compile project(path: ':UserCareSDK-Android-v1.0.14.2') {
+        exclude group: 'com.android.support'
+    }
     // Optional. If You going to use crashlytics
-    compile project(path: ':UserCareSDK-crashlytics-v1.0.2')
+    compile project(path: ':UserCareSDK-crashlytics-v1.0.2') {
+        exclude group: 'com.android.support'
+    }
 
-    compile "com.android.support:appcompat-v7:$supportLibVersion"
-    compile "com.android.support:design:$supportLibVersion"
-    compile "com.android.support:recyclerview-v7:$supportLibVersion"
     compile "com.google.android.gms:play-services-gcm:$playServicesLibVersion"
     compile "com.google.android.gms:play-services-ads:$playServicesLibVersion"
 
-    compile "com.android.support:cardview-v7:$supportLibVersion"
-    compile 'com.cocosw:bottomsheet:1.2.0'
     // Optional. If You going to use crashlytics
     compile('com.crashlytics.sdk.android:crashlytics:2.6.1@aar') {
         transitive = true;

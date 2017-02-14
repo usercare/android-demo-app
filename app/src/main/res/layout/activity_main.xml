@@ -1,79 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    android:id="@+id/drawerLayout"
+
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <FrameLayout
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@mipmap/background">
+        android:layout_height="match_parent">
 
-        <ScrollView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@mipmap/background">
 
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
-                <FrameLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:paddingBottom="5dp"
-                    android:paddingTop="5dp">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <TextView
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="A g e n t A I"
-                        android:textAllCaps="true"
-                        android:textColor="@android:color/white"
-                        android:textSize="17sp"
-                        android:textStyle="bold"/>
+                        android:layout_height="?attr/actionBarSize"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp">
 
-                    <ImageButton
-                        android:id="@+id/testSettingsButton"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_gravity="center|right"
-                        android:layout_marginRight="15dp"
-                        android:background="@mipmap/ic_settings_white"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="A g e n t A I"
+                            android:textAllCaps="true"
+                            android:textColor="@android:color/white"
+                            android:textSize="17sp"
+                            android:textStyle="bold"/>
 
-                </FrameLayout>
+                        <ImageButton
+                            android:id="@+id/testSettingsButton"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_gravity="center|right"
+                            android:layout_marginRight="15dp"
+                            android:background="@mipmap/ic_settings_white"/>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="5dp"
-                    android:background="@drawable/shadow"/>
+                    </FrameLayout>
 
-                <include
-                    android:id="@+id/includeContentMain"
-                    layout="@layout/content_main"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:background="@drawable/shadow"/>
 
-            </LinearLayout>
+                    <include
+                        android:id="@+id/includeContentMain"
+                        layout="@layout/content_main"/>
 
-        </ScrollView>
+                </LinearLayout>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="21dp"
-            android:scaleType="center"
-            android:src="@mipmap/fab"/>
+            </ScrollView>
 
-    </FrameLayout>
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="21dp"
+                android:scaleType="center"
+                android:src="@mipmap/fab"/>
 
-    <include
-        layout="@layout/content_side"
+        </FrameLayout>
+
+        <include
+            layout="@layout/content_side"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"/>
+
+    </android.support.v4.widget.DrawerLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"/>
+        android:layout_height="wrap_content"
+        android:background="@color/bottom_sheet_color"
+        android:clipToPadding="true"
+        app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
-</android.support.v4.widget.DrawerLayout>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:orientation="vertical">
+
+            <Button android:id="@+id/btn_update_usercare_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:text="@string/update_usercare_status"/>
+            <Button android:id="@+id/buyClickButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:text="@string/buy_click"/>
+            <Button android:id="@+id/customEventButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:text="@string/send_custom_event"/>
+            <Button android:id="@+id/crashEventButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:text="@string/send_crash_event"/>
+            <Button android:id="@+id/sendChatMessageButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:text="@string/send_chat_message"/>
+            <Button android:id="@+id/clearCachedData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:text="@string/clear_cached_data"/>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+</android.support.design.widget.CoordinatorLayout>
