@@ -8,4 +8,4 @@ Fast start:
 
 Detail integration guide [here](https://usercare.atlassian.net/wiki/display/DOC/4.3.+Android+Developer+Guide).
 
-1.0.14.1
+1.0.15

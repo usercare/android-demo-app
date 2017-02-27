@@ -155,6 +155,9 @@ public class MainActivity extends AppCompatActivity {
 			@Override
 			public void onNext(Boolean result) {
 				Log.d(TAG, " SdkInitialization result = " + result);
+				if (mManager != null) {
+					Log.d(TAG," Is tickets exist: " + mManager.isTicketsExist());
+				}
 			}
 		});
 
