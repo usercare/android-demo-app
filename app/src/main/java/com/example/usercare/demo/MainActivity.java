@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -37,6 +38,9 @@ import com.usercare.messaging.MessagingActivity;
 import com.usercare.messaging.UserCareMessagingClient;
 import com.usercare.network.socket.OnSocketConnectedListener;
 import com.usercare.network.socket.SocketIOClientListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import rx.Observable;
 import rx.Observer;
@@ -90,6 +94,15 @@ public class MainActivity extends AppCompatActivity {
 			setupInAppActions();
 		}
 		initCallBacksSDK();
+		getAppStatusManager().setChatTags(null);
+	}
+
+	@NonNull
+	private UserCareAppStatusManager getAppStatusManager() {
+		if (mManager == null) {
+			mManager = new UserCareAppStatusManager(MainActivity.this, configuration.getCustomerId(), configuration.getAppId());
+		}
+		return mManager;
 	}
 
 	private void initCallBacksSDK() {
@@ -252,9 +265,10 @@ public class MainActivity extends AppCompatActivity {
 	private void bottomSheetClicked(int bottomSheetBtnId) {
 		switch (bottomSheetBtnId) {
 			case R.id.btn_update_usercare_status:
-				mManager = new UserCareAppStatusManager(MainActivity.this, configuration.getCustomerId(), configuration.getAppId());
+				mManager = getAppStatusManager();
 				//mManager.setUserProperties("John", "Doe", "test@test.com");
 				//mManager.setUserProperty("custom_property_key", "custom_property_value");
+				mManager.setNeedCheckPushNotifications(true);
 				mManager.updateAppStatus();
 				/**
 				 * Custom local option disable Settings user in Message View on open
@@ -351,6 +365,9 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void sendPurchaseEvent() {
+		List<String> tags = new ArrayList<>();
+		tags.add("Purchase event sent");
+		mManager.setChatTags(tags);
 		EventsTracker eventsTracker = new EventsTracker(mContext);
 		eventsTracker.setSkuDetails("com.example.usercare.demo.click", "Sample Title", "26.55USD", "USD");
 		eventsTracker.sendPurchaseEvent("com.example.usercare.demo.click", "GPA.1384-6541-2372-70552", System.currentTimeMillis());

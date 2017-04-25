@@ -25,13 +25,15 @@ public class UserCareApp extends Application {
 		/**
 		 * option 2
 		 */
-/*		UserCare.init(this, new Configuration.Builder()
+		/*UserCare.init(this, new Configuration.Builder()
 				// DeviceIdMode : ANDROID_ID_MODE, HARDWARE_SERIAL_MODE, ADVERTISING_MODE
 				.setDeviceIdMode(DeviceIdMode.ANDROID_ID_MODE)
 				.setApiKey("YOUR_UC_API_KEY")  // or in manifest
 				.setCustomerId("YOUR_CUSTOMER_ID")
 				.setAppId("YOUR_UC_APP_ID")  // or in manifest
 				.setGcmPushToken("YOUR_GCM_TOKEN")
+				.setAllowAskWriteStoragePermission(true)
+				.setAllowAskLocationPermission(true)
 				.setInitializeListener(new UserCareAppStatusNetworkManager.InitializeListener() {
 					@Override
 					public UserCareAppSettings onInitDevice(UserCareAppSettings userCareAppSettings) {

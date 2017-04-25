@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.example.usercare.demo">
 
+    <!-- These flexible permissions. You can delete them , but you will lose some SDK functionality. -->
+    <uses-permission android:name="com.android.vending.BILLING"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <permission
         android:name="com.example.usercare.demo.permission.C2D_MESSAGE"
         android:protectionLevel="signature"/>
@@ -20,7 +25,7 @@
         <activity
             android:name=".SplashActivity"
             android:configChanges="orientation"
-            android:launchMode="singleInstance">
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -31,13 +36,13 @@
         <activity
             android:name="com.example.usercare.demo.MainActivity"
             android:configChanges="orientation|screenSize"
-            android:launchMode="singleInstance">
+            android:launchMode="singleTask">
         </activity>
 
         <activity
             android:name="com.usercare.faq.activities.FaqDetailsActivity"
             android:configChanges="orientation|screenSize"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:theme="@style/UCFaqTheme">
             <intent-filter android:label="@string/uc_deep_link_intent_filter_label">
                 <action android:name="android.intent.action.VIEW"/>
@@ -62,7 +67,7 @@
         <activity
             android:name="com.usercare.faq.activities.FaqActivity"
             android:configChanges="orientation|screenSize"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:theme="@style/UCFaqTheme"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
             <intent-filter android:label="@string/uc_deep_link_intent_filter_label">
@@ -81,7 +86,7 @@
         <activity
             android:name="com.usercare.messaging.MessagingActivity"
             android:configChanges="orientation|screenSize"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:theme="@style/UCMessagingTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
             <intent-filter android:label="@string/uc_deep_link_intent_filter_label">
@@ -100,7 +105,7 @@
         <activity
             android:name="com.usercare.tickets.MyTicketsActivity"
             android:configChanges="orientation|screenSize"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:theme="@style/UCMyTicketsTheme">
             <intent-filter android:label="@string/uc_deep_link_intent_filter_label">
                 <action android:name="android.intent.action.VIEW"/>
@@ -118,7 +123,7 @@
         <activity
             android:name="com.usercare.activities.LandingPageActivity"
             android:configChanges="orientation|screenSize"
-            android:launchMode="singleInstance">
+            android:launchMode="singleTask">
             <intent-filter android:label="@string/uc_deep_link_intent_filter_label">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -135,7 +140,7 @@
         <activity
             android:name="com.usercare.activities.VipLoungeActivity"
             android:configChanges="orientation|screenSize"
-            android:launchMode="singleInstance">
+            android:launchMode="singleTask">
             <intent-filter android:label="@string/uc_deep_link_intent_filter_label">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -149,6 +154,12 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.usercare.tickets.MyTicketsDetailsActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTask"
+            android:theme="@style/UCMyTicketsTheme"/>
+
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
@@ -161,6 +172,8 @@
             </intent-filter>
         </receiver>
 
+        <!-- You can use your own push message receiver ,
+            but don't forget call  UserCareGcmHandler.init(getApplicationContext()).onMessageReceived(Bundle data); in that case. -->
         <service
             android:name="com.example.usercare.demo.gcm.GcmService"
             android:exported="false">
@@ -168,6 +181,9 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
             </intent-filter>
         </service>
+
+        <!-- You can use your token refresh listener,
+            but don't forget run service RegistrationIntentService in that case. -->
         <service
             android:name="com.example.usercare.demo.gcm.MyInstanceIDListenerService"
             android:exported="false">
@@ -175,6 +191,7 @@
                 <action android:name="com.google.android.gms.iid.InstanceID"/>
             </intent-filter>
         </service>
+
         <service
             android:name="com.example.usercare.demo.gcm.RegistrationIntentService"
             android:exported="false">
@@ -195,7 +212,7 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="b938ed695b84163b5d607b7f94f5264d3ddcbd0e"/>
+            android:value="YOUR_FABRIC_API_KEY"/>
 
         <!-- AgentAI configuration -->
         <meta-data
