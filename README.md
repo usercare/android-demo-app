@@ -8,4 +8,4 @@ You can get it in agent console [my.agent.ai](https://my.agent.ai).
 
 Detail integration guide [here](https://doc.agent.ai/developer/android).
 
-Latest version is 1.0.16.4
+Latest version is 1.0.17
