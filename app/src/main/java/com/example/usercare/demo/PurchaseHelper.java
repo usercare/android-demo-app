@@ -3,11 +3,12 @@ package com.example.usercare.demo;
 import android.app.Activity;
 import android.util.Log;
 
-import com.usercare.events.EventsTracker;
 import com.example.usercare.demo.purchase.IabHelper;
 import com.example.usercare.demo.purchase.IabResult;
 import com.example.usercare.demo.purchase.Inventory;
 import com.example.usercare.demo.purchase.Purchase;
+import com.usercare.UserCare;
+import com.usercare.events.EventsManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,11 @@ public class PurchaseHelper {
 
     private Activity mActivity;
     private IabHelper mHelper;
+    private final EventsManager eventsManager;
 
     public PurchaseHelper(Activity activity) {
         mActivity = activity;
+        this.eventsManager = UserCare.getInstance().getDependencyManager().getSingleAppComponent().getEventsManager();
     }
 
     public IabHelper setupPurchaseHelper() {
@@ -108,7 +111,7 @@ public class PurchaseHelper {
 
             if (purchase.getSku().equals(ITEM_SKU)) {
                 Log.d(TAG, "Purchase is " + ITEM_SKU);
-                new EventsTracker(mActivity).sendPurchaseEvent(purchase.getSku(), purchase.getOrderId(), purchase.getPurchaseTime());
+                eventsManager.sendPurchaseEvent(purchase.getSku(), purchase.getOrderId(), purchase.getPurchaseTime());
                 mHelper.consumeAsync(purchase, mConsumeFinishedListener);
             }
         }
@@ -166,7 +169,7 @@ public class PurchaseHelper {
     private void complain(String message, Purchase purchase) {
         Log.e(TAG, "**** Purchase Error: " + message);
         if (purchase != null) {
-            new EventsTracker(mActivity).sendPurchaseFailedEvent(purchase.getSku(), purchase.getOrderId(), purchase.getPurchaseTime());
+            eventsManager.sendPurchaseFailedEvent(purchase.getSku(), purchase.getOrderId(), purchase.getPurchaseTime());
         }
     }
 

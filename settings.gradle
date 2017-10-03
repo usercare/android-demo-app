@@ -1,1 +1,1 @@
-include ':app', ':UserCareSDK-Android-v1.0.17', ':UserCareSDK-crashlytics-v1.0.2'
+include ':app', ':UserCareSDK-Android-v1.0.18', ':UserCareSDK-crashlytics-v1.0.2'

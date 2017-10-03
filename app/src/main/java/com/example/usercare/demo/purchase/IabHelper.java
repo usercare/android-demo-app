@@ -28,7 +28,8 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.vending.billing.IInAppBillingService;
-import com.usercare.events.EventsTracker;
+import com.usercare.UserCare;
+import com.usercare.events.EventsManager;
 
 import org.json.JSONException;
 
@@ -69,6 +70,7 @@ import java.util.List;
  *
  */
 public class IabHelper {
+    private final EventsManager eventsManager;
     // Is debug logging enabled?
     boolean mDebugLog = false;
     String mDebugTag = "IabHelper";
@@ -163,6 +165,7 @@ public class IabHelper {
         mContext = ctx.getApplicationContext();
         mSignatureBase64 = base64PublicKey;
         logDebug("IAB helper created.");
+        this.eventsManager = UserCare.getInstance().getDependencyManager().getSingleAppComponent().getEventsManager();
     }
 
     /**
@@ -934,7 +937,7 @@ public class IabHelper {
             SkuDetails d = new SkuDetails(itemType, thisResponse);
             logDebug("Got sku details: " + d);
             inv.addSkuDetails(d);
-            new EventsTracker(mContext).setSkuDetails(d.getSku(), d.getTitle(), d.getPrice(), d.getPriceCurrencyCode());
+            eventsManager.setSkuDetails(d.getSku(), d.getTitle(), d.getPrice(), d.getPriceCurrencyCode());
         }
         return BILLING_RESPONSE_RESULT_OK;
     }

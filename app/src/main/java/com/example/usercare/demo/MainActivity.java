@@ -28,6 +28,7 @@ import com.usercare.UserCare;
 import com.usercare.cache.UserCareCacheSettings;
 import com.usercare.callbacks.error.ErrorEntity;
 import com.usercare.callbacks.message.MessageEntity;
+import com.usercare.data.SingleAppComponent;
 import com.usercare.events.EventsTracker;
 import com.usercare.gcm.UserCareGcmHandler;
 import com.usercare.managers.UserCareAppStatusManager;
@@ -38,6 +39,7 @@ import com.usercare.messaging.MessagingActivity;
 import com.usercare.messaging.UserCareMessagingClient;
 import com.usercare.network.socket.OnSocketConnectedListener;
 import com.usercare.network.socket.SocketIOClientListener;
+import com.usercare.utils.SdkNetworkUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,9 +72,15 @@ public class MainActivity extends AppCompatActivity {
 	private NestedScrollView bottomSheet;
 	private BottomSheetBehavior<NestedScrollView> bottomSheetBehavior;
 	private View.OnClickListener bottomSheetClickListener;
+	private SdkNetworkUtils sdkNetworkUtils;
+	private EventsTracker eventsTracker;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		SingleAppComponent singleAppComponent = UserCare.getInstance().getDependencyManager().getSingleAppComponent();
+		eventsTracker = singleAppComponent.getEventsTracker();
+		sdkNetworkUtils = singleAppComponent.getSdkNetworkUtils();
+
 		requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 		super.onCreate(savedInstanceState);
 		if (getSupportActionBar() != null) {
@@ -169,10 +177,10 @@ public class MainActivity extends AppCompatActivity {
 			public void onNext(Boolean result) {
 				Log.d(TAG, " SdkInitialization result = " + result);
 				if (mManager != null) {
-					Log.d(TAG," Is tickets exist: " + mManager.isTicketsExist());
+					Log.d(TAG, " Is tickets exist: " + mManager.isTicketsExist());
 				}
 			}
-		});
+		}, Schedulers.computation());
 
 		sdkErrorSubscription = userCareCallbackManager.getSdkErrorSubscription(new Observer<Throwable>() {
 			@Override
@@ -368,14 +376,13 @@ public class MainActivity extends AppCompatActivity {
 		List<String> tags = new ArrayList<>();
 		tags.add("Purchase event sent");
 		mManager.setChatTags(tags);
-		EventsTracker eventsTracker = new EventsTracker(mContext);
-		eventsTracker.setSkuDetails("com.example.usercare.demo.click", "Sample Title", "26.55USD", "USD");
-		eventsTracker.sendPurchaseEvent("com.example.usercare.demo.click", "GPA.1384-6541-2372-70552", System.currentTimeMillis());
+		eventsTracker.setSkuDetails("com.usercaredemo.click", "Sample Title", "26.55USD", "USD");
+		eventsTracker.sendPurchaseEvent("com.usercaredemo.click", "GPA.1384-6541-2372-70552", System.currentTimeMillis());
 		Toast.makeText(this, "Purchase successful", Toast.LENGTH_LONG).show();
 	}
 
 	private void setupCustomEvent() {
-		Observable<Boolean> customEventObs = new EventsTracker(mContext)
+		Observable<Boolean> customEventObs = eventsTracker
 				.sendCustomEventRx("custom_event_gson_rx", CustomGsonEvenet.getDemo());
 		if (customEventObs != null) {
 			customEventObs.subscribeOn(Schedulers.computation())
@@ -408,6 +415,8 @@ public class MainActivity extends AppCompatActivity {
 			if (UserCareGcmHandler.init(mContext).isPushTokenAvailable()) {
 				registerAppForPushNotifications();
 			}
+		} else {
+			finish();
 		}
 	}
 
@@ -416,7 +425,7 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void registerAppForPushNotifications() {
-		if (UserCareUtils.isOnline(mContext)) {
+		if (sdkNetworkUtils.isOnline()) {
 			Intent intent = new Intent(mContext, RegistrationIntentService.class);
 			startService(intent);
 		}

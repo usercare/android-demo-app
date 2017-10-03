@@ -44,16 +44,17 @@
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
             android:theme="@style/UCFaqTheme">
-            <intent-filter android:label="@string/uc_deep_link_intent_filter_label">
+            <intent-filter
+                android:autoVerify="true"
+                android:label="@string/uc_deep_link_intent_filter_label">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:host="@string/uc_deep_link_host"
-                      android:pathPrefix="@string/us_deep_link_faq_details"
-                      android:scheme="@string/https"/>
-                <data android:host="@string/uc_deep_link_host"
-                      android:pathPrefix="@string/us_deep_link_faq_details"
-                      android:scheme="@string/http"/>
+                <data
+                    android:host="@string/uc_deep_link_host"
+                    android:pathPrefix="@string/uc_deep_link_faq_details"/>
+                <data android:scheme="@string/http"/>
+                <data android:scheme="@string/https"/>
             </intent-filter>
             <intent-filter android:label="@string/uc_deep_link_intent_filter_label">
                 <action android:name="android.intent.action.VIEW"/>
@@ -70,16 +71,17 @@
             android:launchMode="singleTask"
             android:theme="@style/UCFaqTheme"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
-            <intent-filter android:label="@string/uc_deep_link_intent_filter_label">
+            <intent-filter
+                android:autoVerify="true"
+                android:label="@string/uc_deep_link_intent_filter_label">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:host="@string/uc_deep_link_host"
-                      android:pathPrefix="@string/us_deep_link_section_faq"
-                      android:scheme="@string/https"/>
-                <data android:host="@string/uc_deep_link_host"
-                      android:pathPrefix="@string/us_deep_link_section_faq"
-                      android:scheme="@string/http"/>
+                <data
+                    android:host="@string/uc_deep_link_host"
+                    android:pathPrefix="@string/uc_deep_link_section_faq"/>
+                <data android:scheme="@string/http"/>
+                <data android:scheme="@string/https"/>
             </intent-filter>
         </activity>
 
@@ -89,16 +91,17 @@
             android:launchMode="singleTask"
             android:theme="@style/UCMessagingTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
-            <intent-filter android:label="@string/uc_deep_link_intent_filter_label">
+            <intent-filter
+                android:autoVerify="true"
+                android:label="@string/uc_deep_link_intent_filter_label">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:host="@string/uc_deep_link_host"
-                      android:path="@string/us_deep_link_chat"
-                      android:scheme="@string/https"/>
-                <data android:host="@string/uc_deep_link_host"
-                      android:path="@string/us_deep_link_chat"
-                      android:scheme="@string/http"/>
+                <data
+                    android:host="@string/uc_deep_link_host"
+                    android:path="@string/uc_deep_link_chat"/>
+                <data android:scheme="@string/http"/>
+                <data android:scheme="@string/https"/>
             </intent-filter>
         </activity>
 
@@ -107,16 +110,17 @@
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
             android:theme="@style/UCMyTicketsTheme">
-            <intent-filter android:label="@string/uc_deep_link_intent_filter_label">
+            <intent-filter
+                android:autoVerify="true"
+                android:label="@string/uc_deep_link_intent_filter_label">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:host="@string/uc_deep_link_host"
-                      android:path="@string/us_deep_link_tickets"
-                      android:scheme="@string/https"/>
-                <data android:host="@string/uc_deep_link_host"
-                      android:path="@string/us_deep_link_tickets"
-                      android:scheme="@string/http"/>
+                <data
+                    android:host="@string/uc_deep_link_host"
+                    android:path="@string/uc_deep_link_tickets"/>
+                <data android:scheme="@string/http"/>
+                <data android:scheme="@string/https"/>
             </intent-filter>
         </activity>
 
@@ -124,16 +128,17 @@
             android:name="com.usercare.activities.LandingPageActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask">
-            <intent-filter android:label="@string/uc_deep_link_intent_filter_label">
+            <intent-filter
+                android:autoVerify="true"
+                android:label="@string/uc_deep_link_intent_filter_label">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:host="@string/uc_deep_link_host"
-                      android:path="@string/us_deep_link_landing_page"
-                      android:scheme="@string/https"/>
-                <data android:host="@string/uc_deep_link_host"
-                      android:path="@string/us_deep_link_landing_page"
-                      android:scheme="@string/http"/>
+                <data
+                    android:host="@string/uc_deep_link_host"
+                    android:path="@string/uc_deep_link_landing_page"/>
+                <data android:scheme="@string/http"/>
+                <data android:scheme="@string/https"/>
             </intent-filter>
         </activity>
 
@@ -141,16 +146,17 @@
             android:name="com.usercare.activities.VipLoungeActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask">
-            <intent-filter android:label="@string/uc_deep_link_intent_filter_label">
+            <intent-filter
+                android:autoVerify="true"
+                android:label="@string/uc_deep_link_intent_filter_label">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:host="@string/uc_deep_link_host"
-                      android:path="@string/us_deep_link_viplounge"
-                      android:scheme="@string/https"/>
-                <data android:host="@string/uc_deep_link_host"
-                      android:path="@string/us_deep_link_viplounge"
-                      android:scheme="@string/http"/>
+                <data
+                    android:host="@string/uc_deep_link_host"
+                    android:path="@string/uc_deep_link_viplounge"/>
+                <data android:scheme="@string/http"/>
+                <data android:scheme="@string/https"/>
             </intent-filter>
         </activity>
 

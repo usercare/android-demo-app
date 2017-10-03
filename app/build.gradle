@@ -9,15 +9,21 @@ buildscript {
 }
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+// << Kotlin
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+// >> Kotlin
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
-def UC_VERSION_NAME = '1.0.17'
-def UC_VERSION_CODE = 18
+def UC_VERSION_NAME = '1.0.18'
+def UC_VERSION_CODE = 19
 def supportLibVersion = '23.4.0'
 def playServicesLibVersion = '9.2.1'
+def architectureComponentsVersion = '1.0.0-alpha9'
 
 android {
     compileSdkVersion 23
@@ -30,6 +36,7 @@ android {
         versionCode UC_VERSION_CODE
         versionName UC_VERSION_NAME
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -51,12 +58,13 @@ dependencies {
     compile "com.android.support:appcompat-v7:$supportLibVersion"
     compile "com.android.support:design:$supportLibVersion"
     compile "com.android.support:recyclerview-v7:$supportLibVersion"
+    compile 'com.android.support:multidex:1.0.1'
 
     // option №1: online sdk library
     // ( in this option folders UserCareSDK-Android-vx.x.x and UserCareSDK-crashlytics-vx.x.x
     // don't need, in root settings.gradle ':UserCareSDK-Android-vx.x.x' ':UserCareSDK-crashlytics-vx.x.x'
     // -don't need as well )
-    compile('com.github.usercare:usercaresdk:1.0.17') {
+    compile('com.github.usercare:usercaresdk:1.0.18') {
         exclude group: 'com.android.support'
     }
     // Optional. If You going to use crashlytics
@@ -65,11 +73,11 @@ dependencies {
     }
 
     // option №2: offline sdk library
-    /*compile (project(path: ':UserCareSDK-Android-v1.0.17')) {
+    /*compile(project(path: ':UserCareSDK-Android-v1.0.18')) {
         exclude group: 'com.android.support'
     }
     // Optional. If You going to use crashlytics
-    compile (project(path: ':UserCareSDK-crashlytics-v1.0.2')) {
+    compile(project(path: ':UserCareSDK-crashlytics-v1.0.2')) {
         exclude group: 'com.android.support'
     }
 
@@ -92,11 +100,23 @@ dependencies {
     // >>
     compile 'com.f2prateek.rx.preferences:rx-preferences:1.0.2'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'org.jsoup:jsoup:1.10.1'
+    compile 'org.jsoup:jsoup:1.10.3'
     compile 'joda-time:joda-time:2.9.4'
-    compile 'com.google.dagger:dagger:2.8'
+    compile 'com.google.dagger:dagger:2.11'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.1@aar'
-    compile ('com.google.android:flexbox:0.2.5') {
+    compile('com.google.android:flexbox:0.2.5') {
+        exclude group: 'com.android.support'
+    }
+
+    // << Kotlin
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    // >> Kotlin
+    // Architecture components
+    // Room
+    compile("android.arch.persistence.room:runtime:$architectureComponentsVersion") {
+        exclude group: 'com.android.support'
+    }
+    kapt("android.arch.persistence.room:compiler:$architectureComponentsVersion") {
         exclude group: 'com.android.support'
     }*/
 }

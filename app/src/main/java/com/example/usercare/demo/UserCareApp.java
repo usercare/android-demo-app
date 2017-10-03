@@ -1,6 +1,8 @@
 package com.example.usercare.demo;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
@@ -59,6 +61,12 @@ public class UserCareApp extends Application {
 				.build();
 		Fabric.with(getApplicationContext(), new Crashlytics.Builder().core(crashlyticsCore).build());
 		CrashlyticsController.setCrashId(CrashlyticsManager.generateCrashlyticsIdKey());
+	}
+
+	@Override
+	protected void attachBaseContext(Context base) {
+		super.attachBaseContext(base);
+		MultiDex.install(this);
 	}
 
 }

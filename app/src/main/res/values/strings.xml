@@ -9,19 +9,19 @@
     <string name="send_chat_message">Send chat message</string>
     <string name="clear_cached_data">Clear cached data</string>
 
-    <!-- Deep link -->
-    <string name="bee_blast_deep_link_path_main">/zWQL0qcV63kp88u5SGu68w/beeblast/main</string>
+    <!-- Deep link. Please don't change variable names . -->
     <string name="uc_deep_link_intent_filter_label">AgentAI (or your own dev. label)</string>
 
-    <!-- /YOUR_APP_ID/faq -->
-    <string name="us_deep_link_faq_details">/zWQL0qcV63kp88u5SGu68w/faq</string>
-    <string name="us_deep_link_section_faq">/zWQL0qcV63kp88u5SGu68w/section_faq</string>
-    <!-- /YOUR_APP_ID/chat -->
-    <string name="us_deep_link_chat">/zWQL0qcV63kp88u5SGu68w/chat</string>
-    <!-- /YOUR_APP_ID/tickets -->
-    <string name="us_deep_link_tickets">/zWQL0qcV63kp88u5SGu68w/tickets</string>
-    <!-- /YOUR_APP_ID/landing_page -->
-    <string name="us_deep_link_landing_page">/zWQL0qcV63kp88u5SGu68w/landing_page</string>
-    <string name="us_deep_link_viplounge">/zWQL0qcV63kp88u5SGu68w/viplounge</string>
+        <!-- Host of your compay Agent.ai Domain. You can find it there  https://my.agent.ai/publisher/company_info/ -->
+        <string name="uc_deep_link_host">yourcompanyaidomain.agent.ai</string>
+
+        <!-- /dl/yourcompanyaidomain/yourpublisherid/faqs
+        yourpublisherid you can find it there  https://my.agent.ai/apps/-->
+    <string name="uc_deep_link_faq_details">/dl/yourcompanyaidomain/yourpublisherid/faqs</string>
+    <string name="uc_deep_link_section_faq">/dl/yourcompanyaidomain/yourpublisherid/section_faq</string>
+    <string name="uc_deep_link_chat">/dl/yourcompanyaidomain/yourpublisherid/chat</string>
+    <string name="uc_deep_link_tickets">/dl/yourcompanyaidomain/yourpublisherid/tickets</string>
+    <string name="uc_deep_link_landing_page">/dl/yourcompanyaidomain/yourpublisherid/landing_page</string>
+    <string name="uc_deep_link_viplounge">/dl/yourcompanyaidomain/yourpublisherid/viplounge</string>
     <!-- Deep link -->
 </resources>
