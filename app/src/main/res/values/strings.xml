@@ -13,7 +13,7 @@
     <string name="uc_deep_link_intent_filter_label">AgentAI (or your own dev. label)</string>
 
         <!-- Host of your compay Agent.ai Domain. You can find it there  https://my.agent.ai/publisher/company_info/ -->
-        <string name="uc_deep_link_host">yourcompanyaidomain.agent.ai</string>
+        <string name="uc_deep_link_host">yourcompanyaidomain-dl.agent.ai</string>
 
         <!-- /dl/yourcompanyaidomain/yourpublisherid/faqs
         yourpublisherid you can find it there  https://my.agent.ai/apps/-->
