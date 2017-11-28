@@ -2,7 +2,7 @@
 
 buildscript {
     // not necessary . Only for offline option lib
-    ext.kotlinVersion = '1.1.51'
+    ext.kotlinVersion = '1.1.60'
     repositories {
         jcenter()
     }

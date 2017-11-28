@@ -227,9 +227,6 @@
         <meta-data
             android:name="UC_API_KEY"
             android:value="YOUR_UC_API_KEY"/>
-        <meta-data
-            android:name="UC_GCM_PUSH_TOKEN"
-            android:value="YOUR_GCM_TOKEN"/>
         <!-- AgentAI configuration -->
 
     </application>
